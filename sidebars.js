@@ -33,6 +33,7 @@ module.exports = {
             'reference/design/media-types',
             'reference/design/endpoints',
             'reference/design/actions',
+            'reference/design/api-definition',
           ]
         },
         {
