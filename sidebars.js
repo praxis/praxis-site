@@ -8,10 +8,6 @@ module.exports = {
         'intro/installation'
       ]
     },
-    // {
-    //   type: 'doc',
-    //   id: 'gettingStarted/gettingStarted'
-    // },
     {
       type: 'category',
       label: 'Getting Started',
@@ -20,16 +16,20 @@ module.exports = {
         'gettingStarted/intro', 
         'gettingStarted/designingApiResources',
         'gettingStarted/settingUpOurDB',
-        'gettingStarted/implementingOurAPI',
-        'gettingStarted/buildingFiltering',
+        'gettingStarted/implementingReads',
         'gettingStarted/buildingCRUD',                
       ]
-    },    
+    },
     {
       type: 'category',
-      label: 'Other things',
-      collapsed: false,
-      items: ['doc2', 'doc3']
+      label: 'Reference',
+      collapsed: true,
+      items: [
+        'reference/intro',
+        'reference/design/media-types',
+        'reference/design/endpoints',
+        'reference/design/actions',        
+      ]
     }
   ]  
 };

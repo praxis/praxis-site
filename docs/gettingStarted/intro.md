@@ -25,7 +25,8 @@ Ok so at this point we already have a fully bundled Praxis app. We can now creat
 If you are curious about what you just started, you can test it out by getting the list of all populated users by issuing the following curl command from a different shell:
 
 ```shell
-# Get all Users in the DB (api version can also be requested through an X-Api-Version header)
+# Get all Users in the DB
+# Note that api version can also be requested through an X-Api-Version header
 curl 'http://localhost:9292/users?api_version=1'
 ```
 

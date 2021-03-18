@@ -2,13 +2,10 @@
 layout: page
 title: Media Types
 ---
-Media types provide the structural representations of API resources. They also
-contain a set of views with which you can use to render them. To define a media
-type for a resource, create a class that derives from `Praxis::MediaType`,
-define its attributes within the `attributes` section, and declare one or more
-named `views` detailing the subset of the attributes to include. A media type
-can also have a human-readable description as well as an associated Internet
-media type identifier string.
+
+Media types provide the structural representations of the API resources we want to expose. They also commonly have a name, as provided by their identifier. Note that the structure of a MediaType does imply any particular encoding (JSON vs XML...). For example, let's say we want to expose Users in our API. In this case, a simple MediaType for users could be define by a structure containing an `id`, `name` and `email`, and be represented by the following identifier `application/vnd.mycompany.users`. This means that if we issue an API to retrieve a user, we will probably get back a response with `Content-Type: application/vnd.mycompany.users+json`, which indicates 2 different things. The first one indicates what type of attribute structure the payload contains (i.e., `id`, `name` and `email` fields). The second one (denoted by the `+json` suffix) indicates that the structure is encoded in JSON. Praxis Media-Types are concerned only with the design aspects only (i.e., structure), and leaves any encoding concerns to the implementation part.
+
+So, to define a media type for an API resource, we simply create a class that derives from `Praxis::MediaType`, where we can define its structure within the `attributes` section and give it a unique identifier name. A media type can also have a human-readable description, which will show up in any generated documentation.
 
 Here's an example of a simple media type that describes a few attributes for a
 hypothetical Blog API resource. It also defines a couple of views for it, one
@@ -31,19 +28,11 @@ class Blog < Praxis::MediaType
       attribute :country, String
     end
   end
-
-  view :default do
-    attribute :id
-    attribute :owner, view: :compact
-    attribute :subject
-    attribute :locale
-  end
-
-  view :link do
-    attribute :href
-  end
+  
 end
 {% endhighlight %}
+
+DEFAULT FIELDSET??
 
 Once a media type is defined within your application, you can use it to wrap a
 compatible data object holding resource data, and render it using any of the
