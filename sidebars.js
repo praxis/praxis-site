@@ -18,7 +18,7 @@ module.exports = {
       collapsed: false,
       items: [
         'gettingStarted/intro', 
-        'gettingStarted/gettingStarted',
+        'gettingStarted/designingApiResources',
         'gettingStarted/settingUpOurDB',
         'gettingStarted/implementingOurAPI',
         'gettingStarted/buildingFiltering',
