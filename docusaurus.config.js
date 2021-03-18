@@ -17,10 +17,16 @@ module.exports = {
       },
       items: [
         {
-          to: 'docs/',
+          to: 'docs/gettingStarted/intro',
+          activeBasePath: 'docs',
+          label: 'Getting Started',
+          position: 'right',
+        },
+        {
+          to: 'docs/reference/intro',
           activeBasePath: 'docs',
           label: 'Reference',
-          position: 'left',
+          position: 'right',
         },
         {
           href: 'https://github.com/praxis/praxis',
