@@ -11,7 +11,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Getting Started',
-      collapsed: false,
+      collapsed: true,
       items: [
         'gettingStarted/intro', 
         'gettingStarted/designingApiResources',
@@ -26,11 +26,38 @@ module.exports = {
       collapsed: true,
       items: [
         'reference/intro',
-        'reference/design/media-types',
-        'reference/design/endpoints',
-        'reference/design/actions',        
+        {
+          type: 'category',
+          label: 'Design',
+          items: [
+            'reference/design/media-types',
+            'reference/design/endpoints',
+            'reference/design/actions',
+          ]
+        },
+        {
+          type: 'category',
+          label: 'Implementation',
+          items: [
+            'reference/intro',
+          ]
+        },
+        {
+          type: 'category',
+          label: 'Internals',
+          items: [
+            'reference/intro',
+          ]
+        },
+        {
+          type: 'category',
+          label: 'Extensions',
+          items: [
+            'reference/intro',
+          ]
+        },
       ]
-    }
+    },
   ]  
 };
 
