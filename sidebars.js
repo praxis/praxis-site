@@ -35,6 +35,7 @@ module.exports = {
             'reference/design/actions',
             'reference/design/api-definition',
             'reference/design/response-definitions',
+            'reference/design/doc-generation',
           ]
         },
         {
