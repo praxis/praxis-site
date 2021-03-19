@@ -1,5 +1,5 @@
 ---
-title: Endpoint Actions
+title: Actions
 ---
 
 Each of the available actions for an endpoint are defined using the `action` method. At a minimum, an action definition must have a name and at least one route. It's a good idea to add a description for each action so Praxis can use it when generating documentation. In addition to a description an action can also specify:

@@ -1,5 +1,5 @@
 ---
-title: API Endpoints
+title: Endpoints
 ---
 
 With Praxis, you can define all of the API endpoints that your API provides. An enpoint is commonly a set of API actions that are related to a given resource type or related set of actions. i.e., the Users endpoint might define all the actions to list/create and update users.

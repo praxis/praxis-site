@@ -34,6 +34,7 @@ module.exports = {
             'reference/design/endpoints',
             'reference/design/actions',
             'reference/design/api-definition',
+            'reference/design/response-definitions',
           ]
         },
         {
