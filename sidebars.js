@@ -35,6 +35,7 @@ module.exports = {
             'reference/design/actions',
             'reference/design/api-definition',
             'reference/design/response-definitions',
+            'reference/design/traits',
             'reference/design/doc-generation',
           ]
         },
@@ -42,21 +43,25 @@ module.exports = {
           type: 'category',
           label: 'Implementation',
           items: [
-            'reference/intro',
+            'reference/implementation/intro',
           ]
         },
         {
           type: 'category',
           label: 'Internals',
           items: [
-            'reference/intro',
+            'reference/internals/intro',
           ]
         },
         {
           type: 'category',
           label: 'Extensions',
           items: [
-            'reference/intro',
+            'reference/extensions/intro',
+            'reference/extensions/mapper-plugin',
+            'reference/extensions/pagination-plugin',
+            'reference/extensions/field-selection',
+            'reference/extensions/filtering',
           ]
         },
       ]
