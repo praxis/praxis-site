@@ -13,7 +13,7 @@ With this plugin, in addition to the mapper features, you can equip your applica
 
 Neat uh?
 
-There is really only one thing you need to do to enable all this functionality in your app. Simply define the `pagination` and `order` parameters in the right endpoint actions where you want to provide this functionality. Here's an example how the parameter types look like for an action that returns lists of `Post` media types:
+There is really only one thing you need to do to enable all this functionality in your app. Simply define the `pagination` and `order` parameters in the right endpoint actions where you want to provide this functionality. Here's an example how the parameter types look like for an action that returns lists of `Post` media types. In particular, this allows you to use cursor-based pagination on `id` or `title` fields, and to control order in which the results are returned:
 
 ```ruby
   params do
@@ -30,7 +30,7 @@ That's it! Nothing else needs to be done. Your controller will take care of it a
 
 Both the `PaginationParams` and the `OrderingParams` parameter types accept configuration. This means you can not only customize how you allow to paginate and sort, but also you can do it on a per parameter and action basis. Let's take a look at the existing available configuration tweaks.
 
-The built-in pagination supports two types of collection traversal. What we call `page` vs. `cursor`-based.
+The built-in pagination supports two types of collection traversal. What we call `page` vs. `cursor`-based pagination.
 
 ### Page-based Pagination
 
@@ -52,7 +52,7 @@ Note that, in addition to URL-encode the whole query string parameter, you need 
 
 ### Cursor-based Pagination
 
-Cursor-based pagination is usually a more deterministic way to traverse an entire collection. However, this type of pagination does not allow jumping directly to any page of the collection as it requires you to know the last seen value.
+Cursor-based pagination is usually a more deterministic way to traverse an entire collection (independent from DB internals). However, this type of pagination does not allow jumping directly to any page of the collection as it requires you to know the last seen value.
 
 This pagination type is enabled by utilizing the `by` parameter:
 
@@ -68,14 +68,15 @@ curl 'http://localhost:9292/users?api_version=1' -G \
 ```
 
 Note that there is a dependency between using field-based cursor pagination and the sorting order that one might want for the results returned. In other words, the system will let you know if the use of the `by` clause in this pagination mode is incompatible with the requested sort `order` parameter.
-Note that while the system will not prevent one from doing so, cursor-based pagination by using a non-unique field should be avoided. It is possible to 'skip over' and miss out on elements in the result sets such that you never know they exist.
+Note that while the system will not prevent one from doing so, cursor-based pagination when using a non-unique field should be avoided. If you do so, it is possible to 'skip over' and miss out on elements in the result sets such that you never know they exist (i.e., the `from` parameter would skip same value elements).
 
 ### Total-Count Header
 
 Regardless of the type of pagination used, one can also request to receive the total count of elements existing in the collection (pre-paging) by adding `total_count=true` to the pagination string. When specified, a `Total-Count` header will be returned containing the total number of existing collection items (pre-pagination). Note that this calculation incurs an extra DB query (i.e., a SELECT COUNT(*) on the same predicate), thus it has extra performance implications.
 
+### Link Header
 
-TODO: EXPLAIN Note that it is possible for an endpoint action to disable either of the pagination methods. Look for the documentation on the action to see which ones are available for use.
+Praxis also will return a `Link` header following rfc5988, where the client can easily find links to navigate the collection in a more agnostic way (i.e., `first`, `next`, `prev` and `last` relations). 
 
 ### TLDR: examples
 
@@ -89,7 +90,7 @@ Here are some other types of pagination examples:
 
 Note: These example values are presented in the raw syntax, but they will all need to be properly encoded when passed in the query string parameters. For example: pagination=page%3D1%2Ctotal_count%3Dtrue
 
-TODO: Where do we talk about the Link headers!!?!
+
 
 ### Ordering
 
@@ -97,8 +98,8 @@ Endpoint actions that provide the order parameter allow you to specify the order
 
 Here are some handy examples:
 
--id:   Sort by the values of the id field, in descending order
-name,-start_date,id:   Sort by name values, then by descending order of start_date, and finally by id
+* `-id`: Sort by the values of the id field, in descending order
+* `name,-start_date,id`: Sort by name values, then by descending order of start_date, and finally by id
 
 The names to fields to sort must be valid attributes in the associated media type, or the request will fail with a validation error.
 
@@ -129,7 +130,7 @@ in which case "all" of the order fields would have to be in the `id` or `name` s
 
 ## Enabling the Plugin
 
-In order to be able to use the `PaginationParams` and the `OrderingParams`, you need to enable this plugin. You can do so by simply requirimg its file and tell Praxis to use it within a `configure` block. For example, adding these pieces in the `config/environment.rb` file:
+In order to be able to use the `PaginationParams` and the `OrderingParams`, you need to enable this plugin. You can do so by simply requiring its file and tell Praxis to use it within a `configure` block. For example, adding these pieces in the `config/environment.rb` file:
 
 ```ruby
 require 'praxis/plugins/pagination_plugin'

@@ -14,7 +14,7 @@ These combined, equip your application to:
 
 Not bad!
 
-So we provide more information for each of these features in their respective extension pages, but in a nutshell, this allows you to do things like this.
+You can find more information on each of these features in their respective extension pages, but in a nutshell, the `MapperPlugin` allows you to do things like this.
 
 In the endpoint definition, you can easy enable field_selection and define which filters you accept:
 ```ruby
@@ -39,7 +39,7 @@ In your Resource business logic, you can define how these API filter names might
     )
 ```
 
-And then finally, in your Controllers you can easily invoke the `display` method to render the (automatically) retrieved resources, into the right field tree that the client wants. Here's how the `index` action for retrieving posts could look like:
+And then finally, in your Controllers you can easily invoke the `build_query` to make the system craft the right set of DB queries, and the `display` method to render the retrieved resources, into the right media type subattribute trees that the client wants. Here's how the `index` action for retrieving posts could look like:
 
 ```ruby
   def index
@@ -62,11 +62,11 @@ Praxis::Application.configure do |application|
 
 This alone brings in all the functionality above, but requiring classes like `FieldSelector`, `FilteringParams`, exposing the `display` and `build_query` methods in the controller, intercepting and mapping API filters into extra join DB statement, and being able to preload and join the necessary related tables to retrieve the required fields in an efficient way.
 
-As a note, this plugin does not include pagination and sorting extensions, which are easily available through the PaginationPlugin
+As a note, this plugin does not include pagination and sorting extensions, which are easily available through the `PaginationPlugin`
 
 ## Configuration
 
-The Mapper plugin accepts only 1 configuration option thus far: `debug_queries`. Like any other plugin, you can set it up under the `application.config` subtree. For example:
+The Mapper plugin currently accepts only 1 configuration option: `debug_queries`. Like any other plugin, you can set it up under the `application.config` subtree. For example:
 
 ```ruby
 Praxis::Application.configure do |application|

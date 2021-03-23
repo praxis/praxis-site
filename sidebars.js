@@ -48,13 +48,6 @@ module.exports = {
         },
         {
           type: 'category',
-          label: 'Internals',
-          items: [
-            'reference/internals/intro',
-          ]
-        },
-        {
-          type: 'category',
           label: 'Extensions',
           items: [
             'reference/extensions/intro',
@@ -62,6 +55,17 @@ module.exports = {
             'reference/extensions/pagination-plugin',
             'reference/extensions/field-selection',
             'reference/extensions/filtering',
+          ]
+        },
+        {
+          type: 'category',
+          label: 'Internals',
+          items: [
+            'reference/internals/intro',
+            'reference/internals/rendering',            
+            'reference/internals/field_selection',
+            'reference/internals/field_expansion',
+            'reference/internals/mapper_selectors',                                 
           ]
         },
       ]
