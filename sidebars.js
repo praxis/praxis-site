@@ -43,7 +43,9 @@ module.exports = {
           type: 'category',
           label: 'Implementation',
           items: [
-            'reference/implementation/intro',
+            'reference/implementation/controllers',
+            'reference/implementation/application',
+            'reference/implementation/responses',
           ]
         },
         {

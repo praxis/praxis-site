@@ -3,6 +3,11 @@ layout: page
 title: Multipart Encoding
 ---
 
+MAYBE BREAK THIS INTO design/multipart-handling AND implementation/multipart-handling?
+(and get the piece from the implementation/responses that has to do with that into the one above?)
+
+
+
 Praxis has built-in support for handling "multipart/form-data" (link to RFC?) encoded requests and responses.
 The support is provided with the `Praxis::Types::MultipartArray` type, and the `Praxis::Responses::MultipartOk` response.
 

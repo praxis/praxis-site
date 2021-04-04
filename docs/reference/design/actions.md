@@ -194,6 +194,7 @@ end
 
 Also, know that you can mix and match the inherited attributes with other ones that do not exist in the MediaType. For example, the above payload can also add a new attribute called `:hidden` which includes its type, description or any other options it requires.
 
+TODO: MultiPart payloads!!
 ## Headers
 
 Action definitions can call out special request headers that Praxis validates
