@@ -67,7 +67,6 @@ module.exports = {
           label: 'Internals',
           items: [
             'reference/internals/intro',
-            'reference/internals/rendering',            
             'reference/internals/field_selection',
             'reference/internals/field_expansion',
             'reference/internals/mapper_selectors',                                 
