@@ -37,6 +37,7 @@ module.exports = {
             'reference/design/response-definitions',
             'reference/design/traits',
             'reference/design/doc-generation',
+            'reference/design/multipart',
           ]
         },
         {
@@ -46,6 +47,7 @@ module.exports = {
             'reference/implementation/controllers',
             'reference/implementation/application',
             'reference/implementation/responses',
+            'reference/implementation/multipart',
           ]
         },
         {
@@ -57,6 +59,7 @@ module.exports = {
             'reference/extensions/pagination-plugin',
             'reference/extensions/field-selection',
             'reference/extensions/filtering',
+            'reference/extensions/rendering',
           ]
         },
         {

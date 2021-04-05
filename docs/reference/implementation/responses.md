@@ -69,43 +69,4 @@ end
 
 ## Multipart Responses
 
-Praxis also provides support for generating multipart responses. In particular, Praxis provides:
-
-- an `add_parts` accessor in `Praxis::Response` to add parts to be returned in
-  a response.
-- a `parts` accessor in `Praxis::Response` to list the parts contained in a
-  response.
-- a `Praxis::MultipartPart` class to represent and format individual parts
-
-Here's an example of how to create a multipart response containing two parts named 'part1' and 'part2'.
-Both use the 'text/plain' Content-Type:
-
-```ruby
-response = Responses::Multipart.new(status:200, media_type: 'multipart/form-data')
-plain_headers = {'Content-Type' => 'text/plain'}
-
-part1 = Praxis::MultipartPart.new("this is part 1", plain_headers)
-response.add_part("part1", part1)
-
-part2 = Praxis::MultipartPart.new("this is part 2", plain_headers)
-response.add_part("part2", part2)
-```
-
-You can also use some of this objects to receive an parse incoming multipart payloads. For example this is a silly example action, that can receive incoming multipart payloads, and will return a multipart response simply containing 1 part for each received part. Each of these returned parts will have a Status code of 201, the same name as the incoming parts and an empty body. Note that this assumes the `bulk_create` action has been defined as receiving a `MultipartArray` payload, which supports the `.each` method to loop over the individual parts.
-
-```ruby
-def bulk_create
-  # Use the default 200 response, and set it to multipart form Content-Type
-  self.response.content_type = 'multipart/form-data'
-
-  # Loop over each incoming part, and generate an outgoing part for each
-  request.payload.each do |part_name, part|
-    part_body = nil # 201, has no body
-    part = Praxis::MultipartPart.new(part_body, name: part_name, {'Status' => '201'})
-
-    response.add_part(part_name, part)
-  end
-  
-  response
-end
-```
+Praxis also provides support for generating multipart responses. Please see [Multipart Responses](multipart) for how to do so.
