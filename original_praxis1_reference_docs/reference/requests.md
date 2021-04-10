@@ -51,6 +51,8 @@ present them to you as a coerced and validated structure. Unlike the `params`
 object where attributes are accessible with dotted notation methods, the `headers` structure 
 is presented as a hash, and therefore accessible through the "[]" notation.
 
+TODO: should we make headers case insensitive?? are they really sensitive in HTTP??
+
 Note that accessing header keys from the controller is case sensitive. Therefore, the string case 
 used must always match the one described in your Resource Definition headers. For
 example, let's assume that our API designer has defined the following action in some ResourceDefinition:
@@ -63,6 +65,8 @@ action :create do
   end
 end
 {% endhighlight %}
+
+
 
 In our controller we would need to check the headers using `request.headers['Authorization']`. Checking `request.headers['AuThOrIzAtIoN']` wouldn't yield any value.
 
@@ -97,6 +101,8 @@ and `payload` (which default to `Attributor::Struct`s), as well as `headers` (wh
 examples of that in the `bulk_create` action of the [Instances](https://github.com/rightscale/praxis/blob/master/spec/spec_app/design/resources/instances.rb) resource definition.
 .
 
+TODO: use example here rather than a link??
+
 ## Action
 
 Request instances also provides an `action` method which you can use to
@@ -118,3 +124,7 @@ provides them just in case.
 
 `request.query`
 : provides the parsed (but not coerced) collection of query string variables from the request
+
+`request.raw_params`
+
+`request.raw_payload`

@@ -47,6 +47,7 @@ module.exports = {
             'reference/implementation/controllers',
             'reference/implementation/application',
             'reference/implementation/responses',
+            'reference/implementation/request-life-cycle',
             'reference/implementation/multipart',
           ]
         },
