@@ -68,7 +68,7 @@ function Home() {
           <h1>{siteConfig.title}</h1>
           <p>{siteConfig.tagline}</p>
           <div className={styles.buttons}>
-            <Link to={useBaseUrl('docs/')}>Get Started</Link>
+            <Link to={useBaseUrl('docs/gettingStarted/intro')}>Go Read the Getting Started and Reference Docs</Link>
           </div>
         </header>
         <main>
