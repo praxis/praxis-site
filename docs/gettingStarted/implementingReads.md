@@ -3,11 +3,11 @@ title: Implementing Reads
 sidebar_label:  Implementing Reads
 ---
 
-So here we are. We have designed our new API endpoints by specifying which actions we want to expose and the shapes of our Post and Comments. We have also taken care of creating our DB structure and filled in some data to play with. It is time to actually implement some code that can allow us to query for these resources.
+So here we are. We have designed our new API endpoints by specifying which actions we want to expose and the shapes of our Post and Comments. We have also taken care of creating our DB structure and filling in some data to play with. Now it is time to actually implement some code that can allow us to query for these resources.
 
 ## Implementing index and show actions
 
-Well, we hate to break it to you but the `index` and `show` actions (that search the collection and show a single element) are 100% implemented in the generated scaffolding code. What? Not only that, but they support field selection (a la GraphQL), ordering and pagination. Done and done. Don't quite believe it? Let's take our API for a spin shall we? Let's first start our Rack app by:
+The `index` and `show` actions (that search the collection and show a single element) are 100% implemented in the generated scaffolding code. Not only that, but they also support field selection (similarly to GraphQL), ordering, and pagination. Done and done. Don't quite believe it? Let's take our API for a spin shall we? Let's first start our app by:
 
 ```shell
 bundle exec rackup
@@ -16,17 +16,17 @@ bundle exec rackup
 And now we're ready to throw some queries at it. Here are some examples you can start trying from another terminal:
 
 ```shell
-# Get all posts in the DB but only include:
-#  -- id, contents and author (with only first_name)
+# Get all posts, but only include:
+#  -- id, contents and author (with only the author's first_name)
 curl 'http://localhost:9292/posts?api_version=1' -G \
       --data-urlencode "fields=id,content,author{first_name}"
 
-# Retrieve DB Comment with id 1, but only include:
+# Retrieve the comment with id 1, but only include:
 #  -- id, contents, related post (only id) and related user (only first_name)
 curl 'http://localhost:9292/comments/1?api_version=1' -G \
   --data-urlencode "fields=id,content,post{id},user{first_name}"
 
-# Retrieve the second page of users, ordering them by uuid first, and then last_name (page size of 5)
+# Retrieve the second page of users with a page size of 5, ordered by uuid first and then last_name
 #  -- display only their id, email and first_name
 curl 'http://localhost:9292/users?api_version=1' -G \
     --data-urlencode "fields=id,email,first_name" \
@@ -34,7 +34,7 @@ curl 'http://localhost:9292/users?api_version=1' -G \
     --data-urlencode "pagination=page=2,items=5"
 ```
 
-And there you go! you have a fully functioning API that is able to query items from a real DB, with full support for GraphQL-style field selection, embeddable nested resources, pagination and ordering. You're more than welcome to enable SQL logging and see how efficient the queries are...Not too shabby having all this functionality without having written a single line of controller or ORM code! (To enable logging the easiest is to add `ActiveRecord::Base.logger = Logger.new(STDOUT)` towards the end of `config.ru`)
+And there you go! you have a fully functioning API that is able to query items from a real DB, with support for GraphQL-style field selection, embeddable nested resources, pagination, and ordering. You're more than welcome to enable SQL logging and see how efficient the queries are... Not too shabby having all this functionality without having written a single line of controller or ORM code! (To enable logging the easiest is to add `ActiveRecord::Base.logger = Logger.new(STDOUT)` towards the end of `config.ru`)
 
 Did this leave you thirsty for more? Ok, challenge accepted, let's go for extra credit by showing you how you can trivially enable powerful query filtering on top of this.
 
@@ -45,7 +45,7 @@ So to build filters with which to query elements in the `index` action we need t
  * Enable the `filters` parameter in the API endpoint, and specify which attributes we're allowed to filter by.
  * Tell Praxis how each of the API filters map into which underlying resource or model properties.
 
-So let's get started.
+Let's get started.
 
 Luckily, since we've generated the endpoint using our Praxis generator, we already have en example of how to define the filters attribute. We can just uncomment those lines, and simply list the attributes we allow to filter by. So, for example, we know that a `Post` MediaType has an `id`, `title`, `content` and an `author`, so for demonstration purposes we could allow you to filter by `title` (allowing wildcards), and by author's `email` or `id`. In these cases we'll only enable the `=` and `!=` operators, but there are many others that are supported. To do so, we need replace the already existing (commented out due to scaffolding) `filters` parameter in the `design/v1/endpoints/posts.rb` file to look exactly like this:
 
