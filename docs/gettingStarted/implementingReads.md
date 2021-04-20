@@ -47,7 +47,7 @@ So to build filters with which to query elements in the `index` action we need t
 
 Let's get started.
 
-Luckily, since we've generated the endpoint using our Praxis generator, we already have en example of how to define the filters attribute. We can just uncomment those lines, and simply list the attributes we allow to filter by. So, for example, we know that a `Post` MediaType has an `id`, `title`, `content` and an `author`, so for demonstration purposes we could allow you to filter by `title` (allowing wildcards), and by author's `email` or `id`. In these cases we'll only enable the `=` and `!=` operators, but there are many others that are supported. To do so, we need replace the already existing (commented out due to scaffolding) `filters` parameter in the `design/v1/endpoints/posts.rb` file to look exactly like this:
+Luckily, since we've generated the endpoint using the Praxis generator, we already have en example of how to define the `filters` attribute. We can just uncomment those lines and then list the attributes we want to allow for filtering. The `Post` MediaType has an `id`, `title`, `content` and an `author`. You could, for example, allow filtering by `title` (allowing wildcards), and then by author's `email` or `id`. In these cases we'll only enable the `=` and `!=` operators, but there are many others that are supported. To do so, we need replace the already existing (commented out due to scaffolding) `filters` parameter in the `design/v1/endpoints/posts.rb` file with the following:
 
 ```ruby
     attribute :filters, Praxis::Types::FilteringParams.for(MediaTypes::Post) do
@@ -57,7 +57,7 @@ Luckily, since we've generated the endpoint using our Praxis generator, we alrea
     end
 ```
 
-And now that the endpoint is ready to accept and validate that new parameter, we simply need to inform the associated Resource object about how to map this API-level attribute names into ORM-level models and associations. To do so, we simply need to fill it in the `filters_mapping` function in the `Post` resource (in `app/v1/resources/post.rb`). In this case, we've designed the DB fields basically for the purposes of the API, so the names in the DB are very much the API attributes. However, for APIs that have to deal with already existing DBs and ORMs, that is often not the case, and the mappings might look a little more purposeful. But anyway, for our `title` filter, the mapping is the same as that's exactly the same method in the underlying `Post` model. For our `author.email` filter, we don't need to remap anything either, as the `author` relationship is called the same in the model, and once we're in the `User` model there is an `email` attribute as well. For `author.id` we could perfectly do the same as they map properly to the underlying ORM world, but for demonstration purposes we can also show that we can map it to the `author_id` attribute of the `Post` model itself (that way we don't even need to pay the prize of an inner join with users). Anyway, all of this simply means that you'll need to delete the commented out scaffolding of the `filters_mapping` in the `Post` resource, and past this instead:
+And now that the endpoint is ready to accept and validate that new parameter, we simply need to inform the associated Resource object about how to map these API-level attribute names into ORM-level models and associations. To do so, we simply need to fill it in the `filters_mapping` function in the `Post` resource (in `app/v1/resources/post.rb`). In this case, we've designed the DB fields to match those in the API. However, other APIs may have to deal with already existing DBs and ORMs that might not perfectly match the API you wish to expose, and so the mappings might look a little more purposeful. But anyway, for our `title` filter, the mapping is the same as that's exactly the same method in the underlying `Post` model. For our `author.email` filter, we don't need to remap anything either, as the `author` relationship is called the same in the model, and once we're in the `User` model there is an `email` attribute as well. For `author.id` we could simply do the same as they map properly to the underlying ORM world, but for demonstration purposes, we can also show that we can map it to the `author_id` attribute of the `Post` model itself (that way we don't even need to pay the price of an inner join with users). Anyway, all of this simply means that you'll need to delete the commented out scaffolding of the `filters_mapping` in the `Post` resource, and paste this instead:
 
 ```ruby
   filters_mapping(
@@ -67,11 +67,11 @@ And now that the endpoint is ready to accept and validate that new parameter, we
   )
 ```
 
-We can similarly do the same thing for `Comments`. For example, we can allow to filter comments by `post.id` and `user.id` so we can easily list comments for specific posts and/or made by certain users. We're leaving this as an excercise for the reader ;)
+We can similarly do the same thing for `Comments`. For example, we can allow filtering of comments by `post.id` and `user.id` so we can easily list comments for specific posts and/or made by certain users. We're leaving this as an excercise for the reader ;).
 
 So, that's essentially it. What!? There is still no need to build any controller or ORM queries? Nope, that's the power of following the best practices and adding the extensions. Let's give it a whirl! 
 
-First let's make sure we start (or restart) out API server with `bundle exec rackup`. Then, from another terminal, let's get all `posts` that were written by `peter@pan.com` (We know there are some with this email in our seeds):
+First let's make sure we start (or restart) the API server with `bundle exec rackup`. Then, from another terminal, let's get all `posts` that were written by `peter@pan.com` (We know there are some with this email in our seeds):
 
 ```shell
 # Get all posts written by an author with email=peter@pan.com:
@@ -93,7 +93,6 @@ curl 'http://localhost:9292/posts?api_version=1' -G \
 
 And there you go. Notice two things here: one is that multiple filters are separated by an `&`, and also equality filters support an array of values, separated by commas (`author.id=11,12`) which will translate into something like `...WHERE authod_id IN (11,12)...`. Also, this is just the tip of the iceberg with what you can do with filters, suffice to say that it supports AND, OR with the right precedence, including grouping sub-clauses with parenthesis. It also supports all kinds of operators including equality, inequality, greater/smaller, NULL, not NULL and even fuzzy (prefix/suffix) regexp. Pretty powerful for being something that requires no coding whatsoever.
 
-
-Well, at this point we have build a fully featured read-only API which allows us to retrieve users, posts and comments, which supports field selection (including nested relationships), which can paginate and sort and which supports the filtering capabilities we have designed for. All of it, without writing a single line of controller code or any explicit ORM queries. Talk about development efficiency!
+Well, at this point we have built a fully featured read-only API that allows us to retrieve users, posts, and comments; which supports field selection (including nested relationships); which can paginate and sort; and which supports all a wide range of filtering. All of it, without writing a single line of controller code or any explicit ORM queries. Talk about development efficiency!
 
 The next logical step you might be thinking of is: what about the CRUD operations? I'm glad you asked, let's dig in.
