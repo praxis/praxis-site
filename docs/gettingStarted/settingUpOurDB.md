@@ -3,9 +3,9 @@ title: Setting Up Our Database
 sidebar_label:  Setting Up Our Database
 ---
 
-So obviously, to have our API provide data, we need to have a DB with the proper posts and comments tables, and ideally populated with some interesting data. This part has nothing to do with Praxis, but it still needs to be done! Note that if you're building a Praxis API to serve already existing DB data, the only thing you need to do is to configure your models. Or even better, if you're building a Praxis API to serve already existing models within a Rails app, none of this needs to be done, as it's already in place. You can read more about how build all this within an existing Rails app in the documentation for the  `MiddlewareApp` module.
+So obviously, to have our API provide data, we need to have a DB with the proper posts and comments tables, and ideally populated with some interesting data. This part has nothing to do with Praxis, but it still needs to be done! Note that if you're building a Praxis API to serve already existing DB data, the only thing you need to do is to configure your models. Or even better, if you're building a Praxis API to serve already existing models within a Rails app, none of this needs to be done, as it's already in place. You can read more about how to build this within an existing Rails app in the documentation for the  `MiddlewareApp` module.
 
-But we digress, let's first create the tables we want with a migration. Here's a quick and dirty thing you can copy paste to generate that. Note that we're simply adding a `title` and `content` field to the posts, as well as a "foreign key" to the users table for the `author` of the post (Remember that the initial example app we built upon already has a very basic users table we can hook on). For the comments, we're only adding a `content` field, and a couple of keys to point back to the id of the `post` it belongs, and the `user` that made the comment. All very straightforward. Feel free to copy and paste the following snippet onto your shell:
+But we digress, let's first create the tables we want with a migration. Here's a quick and dirty thing you can copy paste to generate that. Note that we're simply adding a `title` and `content` field to the posts, as well as a "foreign key" to the users table for the `author` of the post. Remember that the initial example app we built upon already has a very basic users table. For the comments, we're only adding a `content` field, and a couple of keys to point back to the id of the associated `post`, and the `user` who made the comment. All very straightforward. Feel free to copy and paste the following snippet onto your shell:
 
 ```shell title="Create an ActiveRecord migration for posts and comments"
 cat <<EOT > db/migrate/20210101010111_create_posts_and_comments_table.rb
@@ -40,7 +40,9 @@ sed -i '' '/.*end/i \
 ' app/models/comment.rb
 ```
 
-If it's not entirely clear what that does, simply open up the model files to see their definition. And the last thing we might want to do to setup the storage layer, is to fill in the DB with some interesting data that we can query through the API. We'll keep it very short, but at least we'll have a couple of posts, authored by a couple of users, with one comment for each one. Feel free to spice this up once you're starting to have fun! Copy this shell snippet to add this code into `db/seeds.rb` which is always run when we seed the DB.
+If it's not entirely clear what that does, simply open up the model files under `app/models/` to see their definition.
+
+And the last thing we might want to do to setup the storage layer, is to fill in the DB with some interesting data that we can query through the API. We'll keep it very short, but at least we'll have a couple of posts, authored by a couple of users, with one comment for each one. Feel free to spice this up once you're starting to have fun! Copy this shell snippet to add this code into `db/seeds.rb` which is always run when we seed the DB.
 
 ```shell title="Create some useful data when seeding the DB"
 cat <<EOT >> db/seeds.rb

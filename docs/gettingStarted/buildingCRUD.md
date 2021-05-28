@@ -36,7 +36,7 @@ This defines that an update will be done through a `PATCH` request to the member
 
 Notice that query-string parameters are defined separately from body parameters. Query string parameters are defined in the `params` block of the design, while request body structure is defined in the `payload` block. In this case we will be defining the payload as a simple incoming hash-like structure, but bear in mind that it can be designed to accept arrays, and/or complex multipart bodies, etc.
 
-The only thing that we need to modify from the scaffold code is the payload, as it contains the attributes we want to allow the client to update. You are obviously free to choose the shape and names of that structure. However, a Praxis best practice is to design incoming payload structures that mimic the rendered the corresponding output MediaType (i.e., trying to have INPUTS == OUTPUTS as much as possible). To follow that tenet, we want to accept a payload that has `title`, `contents` (and potentially an `author`), given that these are the only three existing attributes of a `Post`. In this case, however, we won't allow sending an `author` attribute as that's something we might want to keep immutable from creation time. So in the most pure Praxis style, here's how the payload would be designed:
+The only thing that we need to modify from the scaffold code is the payload, as it contains the attributes we want to allow the client to update. You are obviously free to choose the shape and names of that structure. However, a Praxis best practice is to design incoming payload structures that mimic the rendered corresponding output MediaType (i.e., trying to have INPUTS == OUTPUTS as much as possible). To follow that tenet, we want to accept a payload that has `title`, `contents` (and potentially an `author`), given that these are the only three existing attributes of a `Post`. In this case, however, we won't allow sending an `author` attribute as that's something we might want to keep immutable from creation time. So in the most pure Praxis style, here's how the payload would be designed:
 
 ```ruby
   payload reference: MediaTypes::Post do
@@ -45,11 +45,11 @@ The only thing that we need to modify from the scaffold code is the payload, as 
   end
 ```
 
-Copy that to the `update` action of the `Post` endpoint (`design/v1/endpoints/posts.rb`). Now, let's take a look at a couple of things in this definition. 
+Copy that to the `update` action of the `Post` endpoint (`design/v1/endpoints/posts.rb`). Now, let's take a look at a couple of things in this definition.
 
-The first thing to notice is that we didn't define types for any of the attributes. What's that all about? Well, the answer lies in the `reference: MediaTypes::Post` option passed to `payload`. When a payload is given a MediaType reference, any attributes with matching names will direclty inherit all of their type and options from the correspondingly-named attribute in the MediaType. In this case, `title` and `content` will both be defined as `String` as that's the type they have in the reference `Post` MediaType. Good, saved some keystrokes in there.
+The first thing to notice is that we didn't define types for any of the attributes. What's that all about? Well, the answer lies in the `reference: MediaTypes::Post` option passed to `payload`. When a payload is given a MediaType reference, any attributes will directly inherit all of their type and options from the attribute with the same name in the MediaType. In this case, `title` and `content` will both be defined as `String` as that's the type they have in the reference `Post` MediaType. Good, saved some keystrokes in there.
 
-Notice that this is already a benefit from following the INPUTS==OUTPUTS paradigm, as it provides you with terser and more readable code, and it can help avoid silly copy and paste mistakes. We can always define any extra payload attribute we want (including its type and options), even if it does not exist in the reference MediaType. In fact, it is also possible to also redefine the type and options of an attribute, even if it exists in the reference MediaType (that's generaly a bad practice, though, as it's not intuitive to the client)
+Notice that this is already a benefit from following the INPUTS==OUTPUTS paradigm, as it provides you with terser and more readable code, and it can help avoid silly copy and paste mistakes. We can always define any extra payload attribute we want (including its type and options), even if it does not exist in the reference MediaType. In fact, it is also possible to also redefine the type and options of an attribute, even if it exists in the reference MediaType (that's generally a bad practice, though, as it's not intuitive to the client)
 
 Another thing to notice from the definition is that none of the attributes are required. That is because this `update` action (through the `PATCH` HTTP verb) only changes the attributes that are passed in, and leaves the rest untouched. If you wanted an update-type action that can change a member of the collection fully, we recommend the best practice of creating another action using a `PUT` verb to the same member url, and call it something like `replace` to clearly denote that it will replace _all_ values of the object, including resetting the ones that aren't passed in.
 
@@ -62,15 +62,15 @@ So let's now focus our efforts on building the implementation of what we have ju
 
 An important suggestion from Praxis is to confine controller code to only deal with HTTP concepts and transformations (request and response params, payload, headers, HTTP codes and errors, and etc.), while specifically avoiding any business logic (application domain logic). There are many reasons for this but the most important ones have to do with separation of concerns, testability and business logic reuse.
 
-So what Praxis proposes for the `update` action of our controller is to simply call an underlying business logic object to update a `Post`, commonly using the same action name (i.e., `create`) and pass all of the necessary parameters to do so. Once that call to the underlying logic is done, then simply return the `201 Created` response with the appropriate Location header containing the href of the created resource. Done. Short. Clean. Our controller only deals with HTTP protocol adaptation, with some massaging of the incoming/outgoing structures to and from the business logic objects.
+So what Praxis proposes for the `update` action of our controller is to simply call an underlying business logic object to update a `Post`, commonly using the same action name (i.e., `update`) and pass all of the necessary parameters to it. Once that call to the underlying logic is done, then simply return the `204 No Content`. Done. Short. Clean. Our controller only deals with HTTP protocol adaptation, with some massaging of the incoming/outgoing structures to and from the business logic objects.
 
 Ok, so what are these business logic objects then? Well, Praxis calls them "Resources" and are nothing more than pure Ruby classes. Resources are the associated objects that sit in between the Controllers and the Data access, which contain the important business logic of your app. In other words: at the top level Controllers simply deal with HTTP and data structure concerns; at the lowest level Models deal with retrieving and saving data from or to the DB. Resources are reusable components of business logic that sit in the middle and abstract the underlying related models (or other related resources).
 
-Allright, so how does that look in the controller code then? Let's take a look at the scaffolded code for the `update` action that our generator built for us:
+Alright, so how does that look in the controller code then? Let's take a look at the scaffolded code for the `update` action that our generator built for us:
 
 ```ruby
   def update(id:)
-    # A good pattern is to call the same name method on the corresponding resource, 
+    # A good pattern is to call the same name method on the corresponding resource,
     # passing the incoming id and payload (or massaging it first)
     updated_resource = Resources::Post.update(
       id: id,
@@ -82,7 +82,7 @@ Allright, so how does that look in the controller code then? Let's take a look a
   end
 ```
 
-The first thing to notice is that the `id` parameter we defined in our design step is passed in as a keyword argument to the function. It is also accessible through `request.params.id` but it is cleaner and more self-documenting to be a required function argument. 
+The first thing to notice is that the `id` parameter we defined in our design step is passed in as a keyword argument to the function. It is also accessible through `request.params.id` but it is cleaner and more self-documenting to be a required function argument.
 
 Another thing to notice is that the scaffolded code performs no validation whatsoever on the `id` or the `payload` elements. That is because a powerful part of building your API design with Praxis is that it will all be automatically validated and coerced before it can even reach your controller method. In other words, if our controller method is executed we can be 100% sure that the `id` is an Integer, and any of the passed payload attributes are `Strings`, as we have defined them. If there is any discrepancy with types of parameter names, the framework would have detected it and already sent a validation error back to the client detailing exactly what didn't match the API specification.
 
@@ -112,9 +112,14 @@ curl -XPATCH 'http://localhost:9292/posts/1' \
     -d '{ "title": "Changed Title", "content": "New Content"}'
 ```
 
-There you go! You can now update posts. Check it out by reading the updated post with something like `curl 'http://localhost:9292/posts/1?api_version=1'`.
+There you go! You can now update posts. Check it out by reading the updated post with something like:
 
-Ok, so this implementation for update took a bit of writing and explanation about best practices and options, but really, the scaffolding code did a very good job as we only had to change the payload definition of our `update` action! Not bad. Let's look at what happens when we implement `create`. 
+```shell
+curl 'http://localhost:9292/posts/1?api_version=1' -G \
+      --data-urlencode "fields=id,title,content"
+```
+
+Ok, so this implementation for update took a bit of writing and explanation about best practices and options, but really, the scaffolding code did a very good job as we only had to change the payload definition of our `update` action! Not bad. Let's look at what happens when we implement `create`.
 
 ## Create
 
@@ -138,9 +143,9 @@ The first thing to notice is the RESTful design choices that the scaffold genera
   end
 ```
 
-This specifies that creating a post is be done through a `POST` verb to the collection url (`/posts`), and successful creation will return a `204 Created` response containing a Location header of the href for the created resource. Otherwise it will respond with a `400 Bad Request` if the request couldn't be completed (with the included information as to why not).
+This specifies that creating a post is done through a `POST` verb to the collection url (`/posts`), and successful creation will return a `204 Created` response containing a Location header of the href for the created resource. Otherwise it will respond with a `400 Bad Request` if the request couldn't be completed (with the included information as to why not).
 
-If we're good with this fairly standard RESTful practice, the only thing that this needs to be completed is to define what payload attributes we want to accept to create a `Post`. 
+If we're good with this fairly standard RESTful practice, the only thing that this needs to be completed is to define what payload attributes we want to accept to create a `Post`.
 
 If we follow the INPUTS==OUTPUT best practices, we want to accept a payload that has a `title`, a `contents` and an `author` (with this attribute also matching a subset of the original `User` MediaType). So, in the more pure Praxis style, here's how the payload would be designed:
 
@@ -152,19 +157,19 @@ If we follow the INPUTS==OUTPUT best practices, we want to accept a payload that
       attribute :id, required: true
     end
     requires.at_least(1).of :title, :content
-    requires.all :author 
+    requires.all :author
   end
 ```
 
-Now, let's take a look at a couple of things from this definition. 
+Now, let's take a look at a couple of things from this definition.
 
-The first one, again, is that we didn't define types for any of the attributes. There's no need since the attribute structure and names match the referenced `Post` MediaType. Yay! Again a best practice that can reward you in terseness and avoid mistakes when you follow the INPUTS==OUTPUTS paradigm. Note that any extra payload attribute that we might want to accept can still be fully defined with its type an options. In fact, it is possible to even redefine the type and options of an attribute even if the reference MediaType has it (that sounds like a bad practice, though, as it's not intuitive to the client).
+The first one, again, is that we didn't define types for any of the attributes. There's no need since the attribute structure and names match the referenced `Post` MediaType. Yay! Again a best practice that can reward you in terseness and avoid mistakes when you follow the INPUTS==OUTPUTS paradigm. Note that any extra payload attribute that we might want to accept can still be fully defined with its type and options.
 
 The second thing to notice is how we've defined the way to specify the author of the post. Often times you see a payload having an `author_id` attribute, but following the INPUTS==OUTPUTS paradigm we want to change that to have an `author` struct, with only an `id` inside. In the same fashion, we can trivially start accepting other author information like `email` or `uuid` (even optionally within the `author` struct) to connect the `Post` to it. It's all about the consistency and the principle of least surprise to your users of the API.
 
 Finally (and more for demonstration purposes than anything else), we have decided that we can accept a post without a `title` or without a `content`, but we need at least one of them. The `author` however is always required (along with its `id`).
 
-<!-- 
+<!--
 TODO: These 2 paragraphs should be incorporated to the update instead?
 
 So, now that the Create API is designed, and Praxis will take 1) route that request to the `create` method in the `Posts` version 1 controller, and 2) to take full care to always parse and validate all the incoming parameters and respond with a failure 400 code (and an appropriate message as to why) to the client, if something does not match the spec.
@@ -173,14 +178,14 @@ In the case all checks out, our `create` code in the `Posts` controller will be 
 
 Let's turn to the implementation now.
 
-### Implementating Create
+### Implementing Create
 
 This is the scaffolded code we find for `create` in the controller:
 
 ```ruby
   # Creates a new Post
   def create
-    # A good pattern is to call the same name method on the corresponding resource, 
+    # A good pattern is to call the same name method on the corresponding resource,
     # passing the incoming payload, or massaging it first
     created_resource = Resources::Post.create(request.payload)
 
@@ -189,7 +194,7 @@ This is the scaffolded code we find for `create` in the controller:
   end
 ```
 
-Umm... well, that looks good enough, doesn't it? Seems we're done with our controller! Let's build the actual business logic shall we? 
+Umm... well, that looks good enough, doesn't it? Seems we're done with our controller! Let's build the actual business logic, shall we?
 
 To do so, let's turn to our scaffolded `Post` resource in `app/v1/resources/post.rb`. As you can see, for now there is no extra logic other than actually creating a row in the DB and returning an instance of the resource that wraps it:
 
@@ -214,20 +219,20 @@ This scaffolded code assumes that the payload attributes of the API have the sam
 
 Let's look at what we've done. First we dig the `author.id` from the payload and look the `User` in the DB, by `id`. Note that we do not need to check if the `author` or the `id` are null as that's all taken care for us by the framework.
 
-If we cannot find this user we need to signal something back to the client. In this trivial example we're just raising a string, but typically you'd have this code raise some well known error class and make the controller catch it and respond appropriately with the right HTTP response. For example, create a `ResourceNotFoundError` class or similar, and use it to signal this business logic case (remember this code is not aware of any HTTP concerns, just application business logic). We'll leave this as an excercise to the student ;). 
+If we cannot find this user we need to signal something back to the client. In this trivial example we're just raising a string, but typically you'd have this code raise some well known error class and make the controller catch it and respond appropriately with the right HTTP response. For example, create a `ResourceNotFoundError` class or similar, and use it to signal this business logic case (remember this code is not aware of any HTTP concerns, just application business logic). We'll leave this as an exercise to the reader ;).
 
 If we have found the user, we simply create a ruby hash from the payload and substitute the `:author` attribute with the appropriate user model. ActiveRecord, in this case, knows how to properly fill in the foreign keys since the `Post` model has an `:author` association defined pointing to the `User` model. We could have passed the `:author_id` field just as well.
 
 And that's it. In this case we couldn't simply use the scaffolded code because we wanted to showcase accepting an `author` field on create, but it was fairly easy and short to adapt for it.
 
-Now, let's restart our API server and create a `Post`. To do that, we will send a POST request, with a body containing the `title` and an `author` sub-hash containing an `id`. The following curl request creates a post titled `New Title`, linked to author with `id`=1:
+Now, let's restart our API server and create a `Post`. To do that, we will send a POST request, with a body containing the `title` and an `author` sub-hash containing an `id`. The following curl request creates a post titled `New Title`, linked to author with `id`=11:
 
 ```shell
 curl -XPOST 'http://localhost:9292/posts' \
     -D - \
     -H 'X-Api-Version: 1' \
     -H 'Content-Type: application/json' \
-    -d '{ "title": "New Title", "author": { "id": 1}}'
+    -d '{ "title": "New Title", "author": { "id": 11}}'
 ```
 
 Note that we've added the "-D -" flag to curl to ask it to print the response headers. This way we can confirm that we properly get a `Location` header which tells us the URL (and therefore id) of the newly created post. Boom! it works!
@@ -254,7 +259,7 @@ From a design perspective, a delete is very similar to the `update`, except that
   end
 ```
 
-It all looks exactly how we want it. This defines that a delete is done through a `DELETE` verb to the member url of the posts collection (`/posts/:id`), where `:id` is the given identifier of the post. As a response, the client must expect a `204 No Content` when successful update, or a `400 Bad Request` if the request couldn't be completed (with included information as to why not).
+It all looks exactly how we want it. This defines that a delete is done through a `DELETE` verb to the member url of the posts collection (`/posts/:id`), where `:id` is the given identifier of the post. As a response, the client must expect a `204 No Content` when successful update, or a `400 Bad Request` when the request couldn't be completed (with included information as to why not).
 
 Ok then, nothing to be added...moving along to the implementation.
 
@@ -289,13 +294,12 @@ In fact, it is exactly the same code but calling the `delete` method of the reso
 
 Well, nothing to be done here either as it simply loads and destroys the model, or returns nil if it couldn't find it. Nice job scaffolder!
 
-Wanna delete a post? yeah, I thought so. Create one with the previous curl above, and use the resulting id to delete it (buy substituting the `YOUR_ID_HERE` in the curl below for your id):
+Wanna delete a post? Yeah, I thought so. Create one with the previous curl above, and use the resulting id to delete it (buy substituting the `YOUR_ID_HERE` in the curl below for your id):
 
 ```shell
 curl -XDELETE 'http://localhost:9292/posts/YOUR_ID_HERE' \
     -H 'X-Api-Version: 1'
 ```
-
 
 # Summary
 
