@@ -2,18 +2,18 @@
 title: Pagination Plugin
 ---
 
-The `PaginationPlugin` plugin is a another 'meta'-extension that brings in the pagination and ordering extensions. 
+The `PaginationPlugin` plugin is a 'meta'-extension that brings in the pagination and ordering extensions.
 
-Specifically, this extension builds on the `MapperPlugin` extensions, and provides a way to signal the mapper to include extra additions to the DB queries that have to do with sorting and limiting the results.
+Specifically, this extension builds on top of the `MapperPlugin` extensions, and provides a way to signal the mapper to add sorting and limiting statements to the DB queries.
 
 With this plugin, in addition to the mapper features, you can equip your application to:
 * accept a powerful language for paginating (i.e., restricting the amount of data returned) and sorting results from your clients
-* apply those specifications into the DB queries (compatible with the rest of field selection and filtering)
+* apply those specifications into the DB queries (compatible with field selection and filtering)
 * reflect the pagination and sorting requirements into the rendered results
 
 Neat uh?
 
-There is really only one thing you need to do to enable all this functionality in your app. Simply define the `pagination` and `order` parameters in the right endpoint actions where you want to provide this functionality. Here's an example how the parameter types look like for an action that returns lists of `Post` media types. In particular, this allows you to use cursor-based pagination on `id` or `title` fields, and to control order in which the results are returned:
+There is really only one thing you need to do to enable all this functionality in your app. Simply define the `pagination` and `order` parameters in the right endpoint actions where you want to provide this functionality. Here's an example of the parameter types for an action that returns lists of `Post` media types. In particular, this allows you to use cursor-based pagination on `id` or `title` fields, and to control order in which the results are returned:
 
 ```ruby
   params do
@@ -28,15 +28,15 @@ That's it! Nothing else needs to be done. Your controller will take care of it a
 
 ## Parameter configuration
 
-Both the `PaginationParams` and the `OrderingParams` parameter types accept configuration. This means you can not only customize how you allow to paginate and sort, but also you can do it on a per parameter and action basis. Let's take a look at the existing available configuration tweaks.
+Both the `PaginationParams` and the `OrderingParams` parameter types accept configuration. This means not only can you customize how to paginate and sort, but you can also do it on a per parameter and per action basis. Let's take a look at the existing available configurations.
 
-The built-in pagination supports two types of collection traversal. What we call `page` vs. `cursor`-based pagination.
+The built-in pagination supports two types of collection traversal. What we call `page`-based vs. `cursor`-based pagination.
 
 ### Page-based Pagination
 
-Page-based pagination returns part of the collection given a fixed page size and based on the underlying (i.e,. implicit) ordering specification from your datastore. Many relational DBs, for example, return results based on primary key order (i.e., the `id` field). It is possible, however, to use this type of pagination with specific order if you combine it with the `order` parameter as well.
+Page-based pagination returns part of the collection given a fixed page size and based on the underlying (i.e,. implicit) ordering specification from your datastore. Many relational DBs, for example, return results based on primary key order (i.e., the `id` field). It is possible, however, to use this type of pagination with specific order if you combine it with the `order` parameter.
 
-Typically this type of pagination is associated with the well known "offset/limit" queries and allows you to jump directly to any of the existing pages of the result set. This pagination type is enabled by using the `page` parameter:
+Typically, this type of pagination is associated with the well known "offset/limit" queries and allows you to jump directly to any of the existing pages of the result set. This pagination type is enabled by using the `page` parameter:
 
 * `page=<integer>` indicates which page number to retrieve (based on a given page size)
 * You can explicitly set the size of a page by also passing in `items=<integer>`
@@ -58,7 +58,7 @@ This pagination type is enabled by utilizing the `by` parameter:
 
 * `by=<field name>` allows traversal of the collection based on ascending order of that field's values
 * you can also use the `from=<field value>`, as a way to start the collection from values after the given one. The collection returned when no from value is specified is the very first in the result set.
-* like in the case of page-based pagination, the page size can be overriden by using `items=<integer>`. There is a ceiling on the value of items you can set, based on the global configured value in the plugin (See global Plugin's configuration)
+* like in the case of page-based pagination, the page size can be overridden by using `items=<integer>`. There is a ceiling on the value of items you can set, based on the global configured value in the plugin (See [global Plugin's configuration](#global-plugin-configuration))
 
 For example, the following API request will logically sort all users by their `email` address, in ascending order, and return [up to] 100 users after the one that has an email value of "joe@example.com".
 
@@ -68,7 +68,7 @@ curl 'http://localhost:9292/users?api_version=1' -G \
 ```
 
 Note that there is a dependency between using field-based cursor pagination and the sorting order that one might want for the results returned. In other words, the system will let you know if the use of the `by` clause in this pagination mode is incompatible with the requested sort `order` parameter.
-Note that while the system will not prevent one from doing so, cursor-based pagination when using a non-unique field should be avoided. If you do so, it is possible to 'skip over' and miss out on elements in the result sets such that you never know they exist (i.e., the `from` parameter would skip same value elements).
+Also note that while the system will not prevent one from doing so, cursor-based pagination when using a non-unique field should be avoided. If you do so, it is possible to 'skip over' and miss out on elements in the result sets such that you never know they exist (i.e., the `from` parameter would skip same value elements).
 
 ### Total-Count Header
 
@@ -76,7 +76,7 @@ Regardless of the type of pagination used, one can also request to receive the t
 
 ### Link Header
 
-Praxis also will return a `Link` header following rfc5988, where the client can easily find links to navigate the collection in a more agnostic way (i.e., `first`, `next`, `prev` and `last` relations). 
+Praxis also will return a `Link` header following rfc5988, where the client can easily find links to navigate the collection in a more agnostic way (i.e., `first`, `next`, `prev` and `last` relations).
 
 ### TLDR: examples
 
@@ -88,22 +88,22 @@ Here are some other types of pagination examples:
 * `by=name,from=alice` Retrieve a page worth of elements from the collection based on the ascending order of their name field, starting at the first value after "alice".
 * `page=1,total_count=true` Retrieve the first page of elements from the collection (page-based unknown sorting), and include the total count in the Total-Count header.
 
-Note: These example values are presented in the raw syntax, but they will all need to be properly encoded when passed in the query string parameters. For example: pagination=page%3D1%2Ctotal_count%3Dtrue
+Note: These example values are presented in the raw syntax, but they will all need to be properly encoded when passed in the query string parameters. For example: `pagination=page%3D1%2Ctotal_count%3Dtrue`
 
 
 
 ### Ordering
 
-Endpoint actions that provide the order parameter allow you to specify the order with which the collection will be presented. Built-in sorting supports a syntax inpired by the JSON-API specification. It allows you to sort by multiple fields to resolve tie-breakers, and each field can be defined with a `-` or `+` sign to indicate descending or ascending order. The lack of sign defaults to ascending order.
+Endpoint actions that provide the order parameter allow you to specify the order with which the collection will be presented. Built-in sorting supports a syntax inspired by the JSON-API specification. It allows you to sort by multiple fields to resolve tie-breakers, and each field can be defined with a `-` or `+` sign to indicate descending or ascending order. The lack of sign defaults to ascending order.
 
 Here are some handy examples:
 
 * `-id`: Sort by the values of the id field, in descending order
 * `name,-start_date,id`: Sort by name values, then by descending order of start_date, and finally by id
 
-The names to fields to sort must be valid attributes in the associated media type, or the request will fail with a validation error.
+The names of the fields to sort must be valid attributes in the associated media type, or the request will fail with a validation error.
 
-You can also restrict which fields you allow to sort by, by using the `by_fields` definition when you're declaring the `OrderingParams` parameter. Here's how to do it if you only want to only allow sorting by `id` or `name` for your users:
+You can also restrict which fields you allow to sort by, by using the `by_fields` definition when you're declaring the `OrderingParams` parameter. Here's how to do it if you want to only allow sorting by `id` or `name` for your users:
 
 ```ruby
   attribute :order, Praxis::Extensions::Pagination::OrderingParams.for(MediaTypes::Post) do
@@ -143,7 +143,7 @@ Praxis::Application.configure do |application|
   }
 ```
 
-This plugin also supports a good amount of global options and therefore it is fairly configurable. The default configuration, however, would probably suit most applications. 
+This plugin also supports a good amount of global options and therefore it is fairly configurable. The default configuration, however, would probably suit most applications.
 
 ## Global Plugin configuration
 
@@ -161,7 +161,7 @@ And here's an example of how to configure all of the default values for the plug
 ```ruby
 Praxis::Application.configure do |application|
   application.bootloader.use Praxis::Plugins::PaginationPlugin, {
-    max_items: 3000, 
+    max_items: 3000,
     default_page_size: 200,
     disallow_paging_by_default: false
     disallow_cursor_by_default: true

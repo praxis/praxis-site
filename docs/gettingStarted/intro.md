@@ -20,7 +20,7 @@ bundle
 
 This example Praxis app is a very simple API that is able to list users stored in a DB, and only have a few attributes like id, uuid, email, first_name and last_name. That's it, there is not much in there, but at least it has the basic directory structure, Gemfile, and etc.
 
-Ok so at this point we already have a fully bundled Praxis app. We can now create, migrate and populate its DB with some some users, and then we can trivially start it up on port 9292 with `bundle exec rake db:recreate && bundle exec rackup`. 
+Ok so at this point we already have a fully bundled Praxis app. We can now create, migrate and populate its DB with some users, and then we can trivially start it up on port 9292 with `bundle exec rake db:recreate && bundle exec rackup`. 
 
 If you are curious about what you just started, you can test it out by getting the list of all populated users by issuing the following curl command from a different shell:
 
