@@ -5,7 +5,7 @@ title: General API Definitions
 There are certain things in an API that are common across all or many endpoints and actions. Praxis' `ApiDefinition` class is a singleton that allows you do exactly that: i.e., to define reusable API-wide constructs. In particular you can define:
 
 * API Information: Global, or versioned, metadata about the api (see [API Information](#global-information)).
-* Response Definitions: Reusable response templates (see [Response Definitions](../response-definitions/))
+* Response Definitions: Reusable response templates (see [Response Definitions](response-definitions))
 * Traits: A convenient way to share common DSL elements across resource definitions and actions (see [traits](../traits/)).
 
 Below is a basic ApiDefinition that defines a response template, general info, and a trait:
@@ -38,7 +38,7 @@ end
 `Praxis::ApiDefinition` is a singleton that can be augmented at any point
 during the bootstrapping process, but it must be before any of your resource definitions
 are loaded. This allows you to refer to the contents of your ApiDefinition from
-your resource definitions. See [Bootstrapping](../bootstrapping/) for more
+your resource definitions. See [Bootstrapping](../internals/bootstrapping) for more
 information on the various bootstrapping stages.
 
 ## Global Information
@@ -58,8 +58,8 @@ The rest of the directives are supported in both the global or version level:
  * `description`: A longer description about the API.
  * `base_path`: Root path prepended to *all* routes.
  * `base_params`: Default parameters applied to all actions. Used to define any params specified in `base_path`.
- * `consumes`: List of [handlers](../handlers) the API accepts from clients (defaults to `'json', 'x-www-form-urlencoded'`).
- * `produces`: List of [handlers](../handlers) the API may use to generate responses (defaults to `'json'`).
+ * `consumes`: List of [handlers](../internals/handlers) the API accepts from clients (defaults to `'json', 'x-www-form-urlencoded'`).
+ * `produces`: List of [handlers](../internals/handlers) the API may use to generate responses (defaults to `'json'`).
 
 It is also possible to dynamically define other simple properties, which will treated in an Opaque way, but properly rendered in the API documentation. For example, one can utilize `termsOfService` as one of the allowed OpenAPI fields.
 
@@ -86,20 +86,20 @@ Praxis::ApiDefinition.define
   info '1.0' do
     base_path '/v1'
     # override the global description.
-    description 'The first stable version of of this example API.'
+    description 'The first stable version of this example API.'
   end
 
 end
 ```
 
-In this example, the given info for version 1.0 would have a `description` of "The first stable version of of this example API.", while the `base_path` would be "/:app_name/v1".
+In this example, the given info for version 1.0 would have a `description` of "The first stable version of this example API.", while the `base_path` would be "/:app_name/v1".
 
-You can use the `base_path` and `base_param` directives to define the base routes and their params for re-use across your whole API, or for a specific version. These are applied "before" any prefixes that you specify in your resources and actions, and will *always* apply, before, and independently, of any `prefix` that may be defined.
+You can use the `base_path` and `base_param` directives to define the base routes and their params for re-use across your whole API, or for a specific version. These are applied "before" any prefixes that you specify in your resources and actions, and will *always* apply, before, and independently of, any `prefix` that may be defined.
 
 
 ## Path-Based Versioning
 
-If you want to version your API based on request paths, set the `version_using` directive to `:path`, and specify an appropriate `base_path` matcher. This `base_path` matcher must include an `:api_version` variable in it (like any other action route) which Praxis will use to extract the exact version string when routing to your resources.
+If you want to version your API based on request paths, set the `version_with` directive to `:path`, and specify an appropriate `base_path` matcher. This `base_path` matcher must include an `:api_version` variable in it (like any other action route) which Praxis will use to extract the exact version string when routing to your resources.
 
 Below is a basic ApiDefinition that uses path-based versioning, and specifies a `base_path` with the `:api_version` placeholder:
 
@@ -108,7 +108,7 @@ Praxis::ApiDefinition.define
 
   info do
     description 'An example an API using path-based versioning'
-    version_using :path
+    version_with :path
     base_path '/api/v:api_version'
   end
 

@@ -13,11 +13,11 @@ module.exports = {
       label: 'Getting Started',
       collapsed: true,
       items: [
-        'gettingStarted/intro', 
+        'gettingStarted/intro',
         'gettingStarted/designingApiResources',
         'gettingStarted/settingUpOurDB',
         'gettingStarted/implementingReads',
-        'gettingStarted/buildingCRUD',                
+        'gettingStarted/buildingCRUD',
       ]
     },
     {
@@ -70,12 +70,14 @@ module.exports = {
             'reference/internals/intro',
             'reference/internals/field_selection',
             'reference/internals/field_expansion',
-            'reference/internals/mapper_selectors',                                 
+            'reference/internals/mapper_selectors',
+            'reference/internals/bootstrapping',
+            'reference/internals/handlers',
           ]
         },
       ]
     },
-  ]  
+  ]
 };
 
 
