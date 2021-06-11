@@ -144,7 +144,7 @@ ApiDefinition.define do
 
 Use the `media_type` method to set expectations for the media type of a response. The `media_type` method can accept:
 
-* a string indicating the full Internet media type identifier
+* a string indicating the full internet media type identifier
 * a complete Praxis MediaType class
 
 For example:
