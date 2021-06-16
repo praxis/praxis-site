@@ -182,7 +182,7 @@ In other words: Praxis will inject a `:reference` parameter to the payload, poin
 ```ruby
 action :create do
   routing { post '' }
-  payload reference: MediaTypes::Post do
+  payload do
     attribute :title, required: true
     attribute :text, required: true
     attribute :author
