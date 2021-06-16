@@ -67,7 +67,7 @@ on the name of your enclosing endpoint definition class, in this case
 
 *Note*: The above 'resetting' behavior of '//' applies *only* to any Resource-level route prefixes that may be defined. It will *not* override an API-wide `base_path` if one is defined (see [Global Api Info](api-definition#global-information)).
 
-You can inspect the complete Praxis routing table using `bundle exec praxis routes` or `bundle exec rake praxis:routes`:
+You can inspect the complete Praxis routing table using `praxis routes` or `bundle exec rake praxis:routes`:
 
 ```bash
 $ rake praxis:routes
