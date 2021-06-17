@@ -48,8 +48,8 @@ end
 
 ## Identifier
 
-The media type identifier method allows you to associate an Internet media type
-string with the MediaType definition. Internet media types should typically be used as unique names (i.e., 'application/vnd.acme.blog') that way the client receiving the response knows exactly what structure to expect to find. However, it is not necessary to do so, and they can be also be left withot a name by using just an encoder string (i.e., 'application/json').
+The media type identifier method allows you to associate an internet media type
+string with the MediaType definition. internet media types should typically be used as unique names (i.e., 'application/vnd.acme.blog') that way the client receiving the response knows exactly what structure to expect to find. However, it is not necessary to do so, and they can be also be left withot a name by using just an encoder string (i.e., 'application/json').
 
 ```ruby
 class Blog < Praxis::MediaType

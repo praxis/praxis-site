@@ -5,11 +5,11 @@ title: Actions
 Each of the available actions for an endpoint are defined using the `action` method. At a minimum, an action definition must have a name and at least one route. It's a good idea to add a description for each action so Praxis can use it when generating documentation. In addition to a description an action can also specify:
 
 * `routing`: paths that should map to this action
-* `params`: the structure of the incoming query string and the parameters you expect tofind in it
+* `params`: the structure of the incoming query string and the parameters you expect to find in it
 * `payload`: the structure of the incoming request body
 * `headers`: specific named headers that Praxis should parse and make available to this action
 * `responses`: type and code of the possible responses the action can generate
-* `nodoc!`: this action should not be included in documentation. Also any types defined withinits payload or parameter blocks will not appear in the generated documentation.
+* `nodoc!`: this action should not be included in documentation. Also any types defined within its payload or parameter blocks will not appear in the generated documentation.
 
 
 ## Routing
@@ -34,7 +34,7 @@ HEAD, POST, PUT, DELETE, TRACE and CONNECT) plus
 
 Praxis also accepts the 'ANY' verb keyword to indicate that the given route should
 match for any incoming verb string. Routes with concrete HTTP verbs will always
-take precendence against 'ANY' verb routes. For instance, take a look at the following
+take precedence against 'ANY' verb routes. For instance, take a look at the following
 simplistic and contrived example:
 
 ```ruby
@@ -59,16 +59,15 @@ the same exact path for an action that needs to respond to all those verbs in th
 same manner. There is a subtle difference, however, and that is that using 'ANY'
 will truly accept any incoming HTTP verb string, while listing them in several routes
 will need to match the specific supported names. For example, an 'ANY' route like the
-above will be able to match incoming requests like `"LINK /"` or `"UNLINK /"` (assuming the Web
-server supports it).
+above will be able to match incoming requests like `"LINK /"` or `"UNLINK /"` (assuming the Web server supports it).
 
 Remember that Praxis prefixes all your resources' routes with a string based
 on the name of your enclosing endpoint definition class, in this case
 '/blogs' since our class is called `Blogs`. You can, however, override the prefix for a single route by prepending '//' to the path (like in the example above) if you don't want the resource-wide prefix to apply. Alternately, you can provide a special prefix of either `''` or `'//'` in the routing block to clear the prefix for any other paths given.
 
-*Note*: The above 'resetting' behavior of '//' applies *only* to any Resource-level route prefixes that may be defined. It will *not* override an API-wide `base_path` if one is defined (see [Global Api Info](global-api-information/)).
+*Note*: The above 'resetting' behavior of '//' applies *only* to any Resource-level route prefixes that may be defined. It will *not* override an API-wide `base_path` if one is defined (see [Global Api Info](api-definition#global-information)).
 
-You can inspect the complete Praxis routing table using `praxis routes` or `rake praxis:routes`:
+You can inspect the complete Praxis routing table using `praxis routes` or `bundle exec rake praxis:routes`:
 
 ```bash
 $ rake praxis:routes
@@ -80,11 +79,11 @@ $ rake praxis:routes
 +---------------------------------------------------------------------------+
 ```
 
-The route command supports the `json` format parameter (i.e., `praxis routes json`) to retrieve the complete routing table in JSON format instead of the tabular example above.
+The route command supports the `json` format parameter (i.e., `bundle exec praxis routes json`) to retrieve the complete routing table in JSON format instead of the tabular example above.
 
 ### Route parameters
 
-Routes can also take optional parameters. Any of those options passed to the route will be sent to the underlying routing engine (Mustermann). This makes it possible to use advanced features like wildcards, and extra type matching restrictions. For example, the following route will match any url ending with `/do_stuff` except if it starts with `/special`:
+Routes can also take optional parameters. Any of those options passed to the route will be sent to the underlying routing engine ([Mustermann](https://github.com/sinatra/mustermann)). This makes it possible to use advanced features like wildcards, and extra type matching restrictions. For example, the following route will match any url ending with `/do_stuff` except if it starts with `/special`:
 
 ```ruby
 action :wildcards do
@@ -93,14 +92,14 @@ action :wildcards do
   end
   description "Will match '/foo/bar/do_stuff' but not '/special/do_stuff"
   params do
-    # :splat will contain the mathing pieces of the wildcards
+    # :splat will contain the matching pieces of the wildcards
     attribute :splat, Attributor::Collection.of(String)
   end
 end
 ```
 
-Notice in the example above that if we use wilcard operators for our routes, we will also need to declare the
-`:splat` parameter in our action definition. This parameter will contain a collection of strings matching every wildcard in our route (and yes, you can have a route with multiple wildcards). If only one wildcard is used, `:splat` will still be an array, and will contain a single string element in it. See the [Mustermann site](https://github.com/rkh/mustermann) for more information about pattern types and other supported options.
+Notice in the example above that if we use wildcard operators for our routes, we will also need to declare the
+`:splat` parameter in our action definition. This parameter will contain a collection of strings matching every wildcard in our route (and yes, you can have a route with multiple wildcards). If only one wildcard is used, `:splat` will still be an array, and will contain a single string element in it. See the [Mustermann site](https://github.com/sinatra/mustermann) for more information about pattern types and other supported options.
 
 
 
@@ -118,7 +117,7 @@ conflicts, parameters in the path always take precedence over parameters in
 the query string.
 
 You can define the expected structure of URL and query string parameters by
-using the `params` method with a block. Use the standard Attributor::Struct
+using the `params` method with a block. Use the standard `Attributor::Struct`
 interface to declare attributes.
 
 For example, if you want to pass a simple boolean query string parameter in your blog index action you could define it like so:
@@ -180,7 +179,7 @@ It is common practice (especially in RESTful APIs) to be able to accept incoming
 
 In other words: Praxis will inject a `:reference` parameter to the payload, pointing to the defined default MediaType of the endpoint (refer to [MediaType](media-types) for more info). It is for this reason that the following `create` action payload definition is enough if the default MediaType of the corresponding `Post` resource has those same attribute names defined.
 
-```
+```ruby
 action :create do
   routing { post '' }
   payload do
@@ -198,7 +197,7 @@ TODO: MultiPart payloads!!
 ## Headers
 
 Action definitions can call out special request headers that Praxis validates
-and makes available to your actions, just like `params` and `payload`.  Use the
+and makes available to your actions, just like `params` and `payload`. Use the
 `headers` method with the attributor interface for hashes to define request header
 expectations:
 
@@ -220,7 +219,7 @@ certain common cases. The `header` DSL takes a String name, and an optional type
 * if a Regexp value is passed, the expectation is that the header value (if exists) matches it
 * if a String value is passed, the expectation is that the incoming header value (if exists) fully matches it.
 
-Note: specifying both header type *and* value is not supported with the `header` method. If you need to use a non-String type and validate the contents in some other way, use the standard `key` method instead.
+Note: specifying both header type **and** value is not supported with the `header` method. If you need to use a non-String type and validate the contents in some other way, use the standard `key` method instead.
 
 Any hash-like options provided as the last argument are passed along to the
 underlying `Attributor` types. Here are some examples of how to define header expectations:
@@ -249,9 +248,7 @@ headers do
 end
 ```
 
-Using the simplified `headers` syntax can cover most of your typical definitions, while the native
-`Hash` syntax allows you to mix and match many more options. Which one to use is up to you. They
-both can perfectly coexist at the same time.
+Using the simplified `headers` syntax can cover most of your typical definitions, while the native `Hash` syntax allows you to mix and match many more options. Which one to use is up to you. They both can perfectly coexist at the same time.
 
 
 ## Responses
@@ -267,11 +264,11 @@ end
 ```
 
 Praxis already provides a set of common responses to work with, but an
-application can register its own custom responses too. Each registered response
+application [can register its own custom responses](response-definitions#defining-response-expectations) too. Each registered response
 has a unique name which is the name to use in the call to `response`.
 
 If the controller for this action can explicitly return any of the common HTTP errors, its endpoint definition for the action must also explicitly list those responses. For example, if the controller for the `:show` action uses a "404 Not Found" to indicate that a given resource id is not present in the DB, the response `:not_found` must be defined in its list of responses. Another way to see this requirement is that any response class that any controller action can return, must have its name listed in the allowed responses of its endpoint definition.
 
-For more information, please see [Responses](responses).
+For more information, please see [Responses](response-definitions).
 
 

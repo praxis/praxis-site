@@ -2,13 +2,12 @@
 title: Endpoints
 ---
 
-With Praxis, you can define all of the API endpoints that your API provides. An enpoint is commonly a set of API actions that are related to a given resource type or related set of actions. i.e., the Users endpoint might define all the actions to list/create and update users.
+With Praxis, you can define all of the API endpoints that your API provides. An endpoint is commonly a set of API actions that are related to a given resource type or related set of actions. i.e., the Users endpoint might define all the actions to list, create and update users.
 
 
-Defining an endpoint is done by creating a class that derives from `Praxis::EndpointDefinition`. Using this class you will be able to define all of the aspects of your endpoint including versioning, description, all actions, with their parameters, routing, responses, authentication, etc.
+Defining an endpoint is done by creating a class that derives from `Praxis::EndpointDefinition`. Using this class you will be able to define all of the aspects of your endpoint including versioning, description, all actions, with their parameters, routing, responses, authentication and etc.
 
-Here's a simple example of a `Blogs` endpoint definition which provides actions related to the `MediaTypes::Blog` media
-type. 
+Here's a simple example of a `Blogs` endpoint definition which provides actions related to the `MediaTypes::Blog` media type.
 
 ```ruby
 class Blogs
@@ -51,16 +50,15 @@ class Blogs
 end
 ```
 
-At a glance, we have defined that this endpoint will respond only to Api version "1.0", it has a description, uses a
-routing prefix of "/blogs", and exposes simple `:index`, `:show` and `:create` actions.
-The `:index` action returns a collection of blogs and does not take any parameters. The `:show` action takes an id parameter and returns a single Blog mediatype. While `:index` and `:show` respond to HTTP GET verbs, the `:create` action responds is accessible through a `POST /blogs`, and can take a payload that contains a title and a description field. Successful requests will return a 201 created HTTP code, while sending a bad parameters will cause a 400 Bad Request response with the body containing the cause.
+At a glance, we have defined that this endpoint will respond only to Api version "1.0", it has a description, uses a routing prefix of "/blogs", and exposes simple `:index`, `:show` and `:create` actions.
+The `:index` action returns a collection of blogs and does not take any parameters. The `:show` action takes an id parameter and returns a single Blog media-type. While `:index` and `:show` respond to HTTP GET verbs, the `:create` action responds is accessible through a `POST /blogs`, and can take a payload that contains a title and a description field. Successful requests will return a 201 created HTTP code, while sending a bad parameters will cause a 400 Bad Request response with the body containing the cause.
 
 Let's dig into the different configuration pieces available when defining endpoints
 
 ## Description
 
 You can specify a description for the endpoint definition using the `description`
-method. This description string is just for human consumption and is simply inserted directly into to the generated API documentation.
+method. This description string is just for human consumption and is simply inserted directly into the generated API documentation.
 
 ```ruby
 class Blogs
@@ -91,7 +89,7 @@ end
 
 ## Media Type
 
-Since endpoints usually group a collection of actions that are related to a type, you can set the "default" media type of a endpoint definition. This way, if the majority of actions return the same mediatype, you don't need to repeat it as much.
+Since endpoints usually group a collection of actions that are related to a type, you can set the "default" media type of a endpoint definition. This way, if the majority of actions return the same media-type, you don't need to repeat it as much.
 
 ```ruby
 class Blogs
@@ -101,16 +99,16 @@ class Blogs
 end
 ```
 
-A MediaType in Praxis is often more than just an Internet media-type string.
+A MediaType in Praxis is often more than just an internet media-type string.
 It commonly refers to the structure or schema with which a given resource type
-will be displayed. This structure is also often associated with an Internet media-type string (i.e.
+will be displayed. This structure is also often associated with an internet media-type string (i.e.
 the string is the `name` for the structure schema).
 
 The value you pass to the media_type method must be a:
 
-* Praxis::MediaType-derived class that defines the attributes 
+* `Praxis::MediaType`-derived class that defines the attributes
   available for representing an API resource.
-* string representing an Internet media type identifier (i.e.
+* string representing an internet media type identifier (i.e.
   'application/json').
 
 For more information on Praxis media types, please see [MediaTypes](media-types).
@@ -169,7 +167,7 @@ end
 
 This would result in the `:show` action responding to the following path `/blogs/:blog_id/posts/:id`, due to the canonical path of the `Blogs` resource being `/blogs/:id`.
 
-To achieve a custom parent parameter we could have used: `parent Blogs, :id => :parent_id` instead, which would have resulted in the following path: `/blogs/:parent_id/posts/:id`.
+To achieve a custom parent parameter we can change `parent Blogs` to `parent Blogs, :id => :parent_id`. This results in the following path: `/blogs/:parent_id/posts/:id`.
 
 
 ## Action Defaults
@@ -207,13 +205,12 @@ class Blogs
 end
 ```
 
-The example above will cause the the `:dry_run` parameter to be propagated and
+The example above will cause the `:dry_run` parameter to be propagated and
 defined in all available actions of the `Blogs` endpoint definition (i.e., both
 `:index` and `:show` actions will have such a parameter).
 
 With `action_defaults` you can use `params`, `payload`, `headers`, and
-`response` stanzas to propagate definitions to all existing actions.
-If any of those stanzas are defined within an action itself Praxis will
+`response` stanzas. If any of those stanzas are defined within an action itself Praxis will
 appropriately merge them. Therefore, in this example, the `:show` action will
 end up with both the `:dry_run` and `:id` parameters.
 
@@ -238,8 +235,21 @@ Having the appropriate `canonical_path` allows you to both generate and parse hr
   * `EndpointDefinition.to_href(<named arguments hash>)` to generate an href for the resource.
   * `EndpointDefinition.parse_href(<href String>)` to get a type-coerced hash of the parameters for the canonical action from the given string.
 
-Given a controller (class or instance), you can use use those helpers by first calling its its `definition` method to retrieve the `EndpointDefinition` it implements, and then using either `to_href` or `parse_href` as described above.
+Given a controller (class or instance), you can use use those helpers by first calling its `definition` method to retrieve the `EndpointDefinition` it implements, and then using either `to_href` or `parse_href` as described above. For example:
 
+```ruby
+class Posts
+  include Praxis::Controller
+
+  implements Endpoints::Posts
+
+  def show(id:)
+    Posts.definition.to_href(id: 1)         # => /posts/1
+    Posts.definition.parse_href('/posts/1') # => { id: 1 }
+    # ...
+  end
+end
+```
 ## nodoc!
 
 TODO:  DEPRECATE IT??
