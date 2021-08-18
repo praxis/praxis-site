@@ -38,13 +38,17 @@ Every filter defined in the Filtering params type can declare:
 * the operators that are allowed to use
 * and if they can be used to do prefix/suffix matching.
 
-When you use the `.for` method of the `FilteringParams` type, the defined filter names must correspond to fields of the mediatype. These names can recurse down into other related fields of the mediatypes, all the way down to a leaf attribute. In other words, filtering is not restricted to a direct attribute, or a single nested level. The only way to provide filter names that do not map to the mediatype would be to use the `FilteringParams` type without the `.for` method, and properly build your parsing and coercion of attributes.
+When you use the `.for` method of the `FilteringParams` type, the defined filter names must correspond to fields of the mediatype. These names can recurse down into other related fields of the mediatypes, all the way down to the final condition. In other words, filtering is not restricted to a direct attribute, or a single nested level. The only way to provide filter names that do not map to the mediatype would be to use the `FilteringParams` type without the `.for` method, and properly build your parsing and coercion of attributes.
 
 There are 8 available operators to choose from: `=`, `<`, `>`,`!=`, `>=`, `<=`, `!`,`!!`. The first 6 are seemingly self explanatory and always take a value (i.e., `filter_name>value`). The last 2 operators are for checking NULL (or NOT NULL) values and do not accept a value. In particular:
 * `filter_name!` would filter results whose `filter_name is NOT NULL`
 * `filter_name!!` would filter results whose `filter_name is NULL`
 
-Filters fo string attributes, can also accept a `fuzzy: true` option, which would allow to prefix or postfix patch the value. For example, using our `title` filter above would allow us to do things like this:
+Something important to point out, is that the filtering framework also allows to place conditions on associations directly (instead of leaf attributes). This powerful feature (only available for the `!` and `!!` operators) allows filtering results where full collections of related objects are empty, or are not empty. For example:
+* `author!` would return only Posts which have associated authors.
+* `comments!!` would return only Posts which have no associated comments
+
+Filters for string attributes, can also accept a `fuzzy: true` option, which would allow to prefix or postfix patch the value. For example, using our `title` filter above would allow us to do things like this:
 * `title=*ending`, which will translate to a SQL query similar to `LIKE "%ending"`
 * `title=starting*`, which will translate to a SQL query similar to `LIKE "starting%"`
 * `title=*Iam%20a%2A%21` (whose encoded value after the `*` is `Iam a*!`) which will translate to a SQL query similar to `LIKE "%Iam a*!"`
