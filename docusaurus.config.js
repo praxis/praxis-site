@@ -71,8 +71,11 @@ module.exports = {
       ],
       copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
     },
-    sidebarCollapsible: true,
-    hideableSidebar: true,
+    docs: {
+      sidebar: {
+        hideable: true
+      }
+    },
     prism: {
       additionalLanguages: ['ruby'],
     },
@@ -83,6 +86,7 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
+          sidebarCollapsible: true,
         },
       },
     ],
