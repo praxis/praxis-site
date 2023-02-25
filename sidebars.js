@@ -45,6 +45,7 @@ module.exports = {
           label: 'Implementation',
           items: [
             'reference/implementation/controllers',
+            'reference/implementation/resources',
             'reference/implementation/application',
             'reference/implementation/responses',
             'reference/implementation/request-life-cycle',
