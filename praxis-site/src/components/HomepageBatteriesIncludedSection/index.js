@@ -46,7 +46,7 @@ export default function HomepageBatteriesIncludedSection() {
             <CodeBlock language='ruby'>
               {code}
             </CodeBlock>
-            <div className="summary" style={{ fontStyle: 'italic', fontSize: '16px', marginTop: '15px', marginBottom: '0px' }}>
+            <div className="summary" style={{ fontStyle: 'italic', fontSize: '14px', marginTop: '15px', marginBottom: '0px' }}>
               The implementation of the example above requires literally no controller code, or manual crafting of DB queries to be written, when several of the add-ons have been enabled.
             </div>
           </div>
