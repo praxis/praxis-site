@@ -41,7 +41,7 @@ export default function HomepageBatteriesIncludedSection() {
   return (
     <>
       <section className={styles.features} >
-        <div className="row" style={{ width: '85%', alignItems: 'center' }}>
+        <div className="row" style={{ width: '85%', alignItems: 'top' }}>
           <div className={clsx('col col--6')}>
             <CodeBlock language='ruby'>
               {code}
@@ -50,7 +50,7 @@ export default function HomepageBatteriesIncludedSection() {
               The implementation of the example above requires literally no controller code, or manual crafting of DB queries to be written, when several of the add-ons have been enabled.
             </div>
           </div>
-          <div className={clsx('col col--6')} style={{ paddingLeft: '40px' }}>
+          <div className={clsx('col col--6')} style={{ paddingLeft: '40px', marginTop: '30px' }}>
             <h2 className={styles.title}>
               <FontAwesomeIcon icon="fa fa-battery-half" style={{ paddingRight: '10px' }} />
               With batteries included

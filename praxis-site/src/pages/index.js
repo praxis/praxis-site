@@ -20,6 +20,17 @@ import styles from './index.module.css';
 
 library.add(fas); // Add all icons to the library so you can use them without importing them individually.
 
+function Description() {
+  return (
+    <section className={styles.descriptionRow} >
+      <div className={clsx('col col--8')}>
+        <div className="text--center padding-horiz--md">
+          <p>Praxis is a light and extensible Ruby framework that allows you to design and create preformant REST APIs at unprecedented speed.</p>
+        </div>
+      </div >
+    </section>
+  )
+}
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   return (
@@ -49,6 +60,7 @@ export default function Home() {
       description="Description will go into a meta tag in <head />">
       <HomepageHeader />
       <main>
+        <Description />
         <HomepageFeatures />
         <HomepageBatteriesIncludedSection />
         <HomepageGettingThisSection />
