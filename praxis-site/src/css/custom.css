@@ -15,6 +15,8 @@
   --ifm-color-primary-lightest: #3cad6e;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --ifm-font-family-base: 'Lato', sans-serif;
+  --ifm-font-family-monospace: 'M PLUS 1 Code', sans-serif;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -28,3 +30,55 @@
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+.navbar__title {
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: lighter;
+  font-size: 1.2rem;
+}
+
+.hero__title {
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: light;
+  font-size: 5rem;
+  /* backdrop-filter: blur(1px) saturate(90%); */
+  /* width: min-content;
+  padding: 0px;
+  margin: 0 auto; */
+}
+
+.hero--primary {
+  --ifm-hero-text-color: #ffffff;
+  --ifm-hero-background-color: #000b0f;
+  /* background-image: linear-gradient(white 0%, transparent 5%, transparent 95%, white 100%), url(/img/praxis-pattern-bg.jpeg); */
+  background-image: url(/img/praxis-pattern-bg.jpeg);
+  background-repeat: no-repeat;
+  background-position: center top;
+  /* text-shadow: -1px -1px 0 #736f6f, 1px -1px 0 #736f6f, -1px 1px 0 #736f6f, 1px 1px 0 #000;
+  opacity: 1 */
+}
+
+/* @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200,700&family=Encode+Sans+Condensed:wght@200&family=Genos:wght@100;500&family=Lato:wght@300&family=M+PLUS+1+Code&family=Ubuntu:wght@700&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;700&family=Encode+Sans+Condensed:wght@200&family=Genos:wght@100;500&family=Lato:wght@300;700&family=M+PLUS+1+Code&family=Ubuntu:wght@400&display=swap');
+/* font-family: 'Cairo', sans-serif;
+font-family: 'Encode Sans Condensed', sans-serif;
+font-family: 'Genos', sans-serif;
+font-family: 'Lato', sans-serif;
+font-family: 'M PLUS 1 Code', sans-serif;
+font-family: 'Ubuntu', sans-serif;
+*/
+
+/* Ubuntu*/
+/* Montserrat - light 300 good for text*/
+/* Lato - light 300 good for text*/
+/* Cairo - extra light 200 good for text*/
+/* Genos - Thin 100 => Good for titles and such*/
+/* M Plus 1 code => Good for code snippets! */
+/* M Plus 1 - good ish and clean ... but a bit spread out*/
+/* Encode Sans condensed => compact and clean */
+
+
+
+/* Exo */
+/* Gruppo */
+/* Prosto One */

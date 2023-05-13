@@ -1,0 +1,19 @@
+.features {
+  display: flex;
+  align-items: center;
+  padding: 2rem 0;
+  width: 100%;
+  justify-content: center;
+}
+
+.title {
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+  font-family: 'Ubuntu', sans-serif;
+}
+
+li {
+  font-size: 1.1rem;
+  color: #606470;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+}

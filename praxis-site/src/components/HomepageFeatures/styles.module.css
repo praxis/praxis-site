@@ -9,3 +9,38 @@
   height: 200px;
   width: 200px;
 }
+
+.featureIconBorder {
+  border-radius: 50%;
+  border: 2px solid #606470;
+  width: 80px;
+  height: 80px;
+  font-size: 40px;
+  text-align: center;
+  margin: auto;
+  margin-bottom: 20px;
+}
+
+.featureIcon {
+  color: #606470;
+  vertical-align: middle;
+}
+
+/* .featureTitle {
+  font-size: 1.2rem;
+  color: #606470;
+  font-weight: 600;
+  margin-bottom: 1rem;
+} */
+
+.features h3 {
+  font-size: 1.2rem;
+  color: #606470;
+  font-weight: 400;
+  margin-bottom: 1rem;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.features p {
+  font-size: 0.9rem;
+}
