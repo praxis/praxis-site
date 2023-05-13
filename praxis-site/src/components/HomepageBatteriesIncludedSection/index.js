@@ -37,7 +37,7 @@ $ curl 'http://localhost:9292/api/users' - G \\
   },
 ...
 `;
-export default function HomepageSection() {
+export default function HomepageBatteriesIncludedSection() {
   return (
     <>
       <section className={styles.features} >

@@ -4,7 +4,10 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
-import HomepageSection from '@site/src/components/HomepageSection';
+import HomepageBatteriesIncludedSection from '@site/src/components/HomepageBatteriesIncludedSection';
+import HomepageGettingThisSection from '@site/src/components/HomepageGettingThisSection';
+import HomepageFAQ from '@site/src/components/HomepageFAQ';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import the FontAwesomeIcon component.
 import { faBookOpen } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
@@ -47,7 +50,9 @@ export default function Home() {
       <HomepageHeader />
       <main>
         <HomepageFeatures />
-        <HomepageSection />
+        <HomepageBatteriesIncludedSection />
+        <HomepageGettingThisSection />
+        <HomepageFAQ />
       </main>
     </Layout>
   );
