@@ -25,7 +25,7 @@ function Description() {
     <section className={styles.descriptionRow} >
       <div className={clsx('col col--8')}>
         <div className="text--center padding-horiz--md">
-          <p>Praxis is a light and extensible Ruby framework that allows you to design and create preformant REST APIs at unprecedented speed.</p>
+          <p>Praxis is a light and extensible Ruby framework that allows you to design and create powerful, consistent and preformant REST APIs at unprecedented development speed</p>
         </div>
       </div >
     </section>
