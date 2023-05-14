@@ -1,0 +1,22 @@
+<tr>
+  <td ng-bind-html="name | attributeName">
+  </td>
+  <td>
+    <a href="#/concepts/filtering_params">Filtering</a>
+  </td>
+  <td>
+    Filter results based on the following fields:
+    <ul>
+      <li ng-repeat="(name,spec) in type.filters"><code>{{name}}</code>
+        using <code>{{ spec.operators }}</code>
+        <span ng-if="spec.fuzzy == true">
+          <i>allows fuzzy matches</i>
+        </span>
+      </li>
+    </ul>
+
+    <dt >Example</dt>
+    <dd ><code>{{details.example}}</code></dd>
+
+  </td>
+</tr>

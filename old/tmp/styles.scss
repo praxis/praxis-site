@@ -1,0 +1,31 @@
+// Customise variables here
+@import "praxis.scss";
+// Override styles here
+.navbar-brand-text {
+  padding-top:    17px;
+  padding-bottom:  5px;
+  font-size:       2em;
+  vertical-align: bottom;
+}
+
+table.description {
+  margin: 1em;
+}
+
+table.description tr.header th {
+  border-bottom:  solid 1px black;
+}
+
+table.description th {
+  padding-bottom: 1em;
+  padding-right:  1em;
+  text-align:     left;
+  vertical-align: top;
+}
+
+table.description td {
+  padding-bottom: 1em;
+  padding-right:  1em;
+  text-align:     left;
+  vertical-align: top;
+}

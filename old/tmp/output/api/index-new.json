@@ -1,0 +1,20 @@
+{
+  "info": {
+    "schema_version": "1.0",
+    "base_path": "/api",
+    "version_with": [
+      "header",
+      "params"
+    ],
+    "consumes": [
+      "json",
+      "x-www-form-urlencoded"
+    ],
+    "produces": [
+      "json"
+    ]
+  },
+  "versions": [
+    "1"
+  ]
+}

@@ -1,0 +1,32 @@
+<tr>
+  <td ng-bind-html="name | attributeName">
+  </td>
+  <td>
+    <a href="#/concepts/pagination_params">Paginator</a>
+  </td>
+  <td>
+    <p ng-if="type.disallowed === undefined">
+      Results can be paginated using either <code>page-based</code> or <code>cursor-based</code> mode. The default is
+      <span ng-if="type.default_mode.by === undefined">
+        <code>page={{ type.default_mode.page }}</code>.
+      </span>
+      <span ng-if="type.default_mode.page === undefined">
+        <code>by={{ type.default_mode.by }}</code>.
+      </span>
+    </p>
+    <p ng-if="type.disallowed.indexOf('cursor') > -1">
+      Results can only be paginated using <code>paging</code> (cursor-based pagination is explicitly disallowed).
+    </p>
+    <p ng-if="type.disallowed.indexOf('paging') > -1">
+      Results can only be paginated using <code>cursors</code> (page-based pagination is explicitly disallowed).
+    </p>
+    <p ng-if="(type.disallowed === undefined) || (type.disallowed.indexOf('paging') > -1)">
+      For cursor-based pagination, the allowed fields are <code>{{ type.fields_allowed.toString() }}</code>.
+    </p>
+    <p>
+      The default amount of items per request is set to <code>{{ type.page_size }}</code> with a hard maximum set at <code>{{ type.max_items}}</code>.
+    </p>
+
+    <attribute-description attribute="details"></attribute-description>
+  </td>
+</tr>

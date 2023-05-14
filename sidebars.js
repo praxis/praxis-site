@@ -2,14 +2,6 @@ module.exports = {
   mainSidebar: [
     {
       type: 'category',
-      label: 'Intro',
-      items: [
-        'intro/intro',
-        'intro/installation'
-      ]
-    },
-    {
-      type: 'category',
       label: 'Getting Started',
       collapsed: true,
       items: [

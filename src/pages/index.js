@@ -1,90 +1,71 @@
 import React from 'react';
-import classnames from 'classnames';
-import Layout from '@theme/Layout';
+import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import useBaseUrl from '@docusaurus/useBaseUrl';
+import Layout from '@theme/Layout';
+import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import HomepageBatteriesIncludedSection from '@site/src/components/HomepageBatteriesIncludedSection';
+import HomepageGettingThisSection from '@site/src/components/HomepageGettingThisSection';
+import HomepageFAQ from '@site/src/components/HomepageFAQ';
 
-import styles from './styles.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import the FontAwesomeIcon component.
+import { faBookOpen } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeSvgIcon } from 'react-fontawesome-svg-icon';
+import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 
-const features = [
-  {
-    title: 'Easy to Use',
-    imageUrl: 'img/undraw_docusaurus_mountain.svg',
-    description: (
-      <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
-      </>
-    ),
-  },
-  {
-    title: 'Focus on What Matters',
-    imageUrl: 'img/undraw_docusaurus_tree.svg',
-    description: (
-      <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
-      </>
-    ),
-  },
-  {
-    title: 'Powered by React',
-    imageUrl: 'img/undraw_docusaurus_react.svg',
-    description: (
-      <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
-      </>
-    ),
-  },
-];
+import { library } from '@fortawesome/fontawesome-svg-core'; // Import the library component.
+// import { fab } from '@fortawesome/free-brands-svg-icons'; // Import all brands icons.
+import { fas } from '@fortawesome/free-solid-svg-icons'; // Import all solid icons.
+import styles from './index.module.css';
 
-function Feature({imageUrl, title, description}) {
-  const imgUrl = useBaseUrl(imageUrl);
+library.add(fas); // Add all icons to the library so you can use them without importing them individually.
+
+function Description() {
   return (
-    <div className={classnames('col col--4', styles.feature)}>
-      {imgUrl && (
-        <div className="text--center">
-          <img className={styles.featureImage} src={imgUrl} alt={title} />
+    <section className={styles.descriptionRow} >
+      <div className={clsx('col col--8')}>
+        <div className="text--center padding-horiz--md">
+          <p>Praxis is a light and extensible Ruby framework that allows you to design and create preformant REST APIs at unprecedented speed.</p>
         </div>
-      )}
-      <h3>{title}</h3>
-      <p>{description}</p>
-    </div>
+      </div >
+    </section>
+  )
+}
+function HomepageHeader() {
+  const { siteConfig } = useDocusaurusContext();
+  return (
+    <header className={clsx('hero hero--primary', styles.heroBanner)}>
+      <div className="container">
+        <h1 className="hero__title">{siteConfig.title}</h1>
+        <p className="hero__subtitle">{siteConfig.tagline}</p>
+        {/* <faBookOpen.svg> Hello</faBookOpen.svg>. */}
+        {/* <FontAwesomeIcon icon="fa fa-book-open" /> */}
+        {/* <div className={styles.buttons}>
+          <Link
+            className="button button--secondary button--lg"
+            to="/docs/intro">
+            Docusaurus Tutorial - 5min ⏱️
+          </Link>
+        </div> */}
+      </div>
+    </header>
   );
 }
 
-function Home() {
-  const context = useDocusaurusContext();
-  const {siteConfig = {}} = context;
-
+export default function Home() {
+  const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
       title={`Hello from ${siteConfig.title}`}
       description="Description will go into a meta tag in <head />">
-      <div className={styles.hero}>
-        <header>
-          <h1>{siteConfig.title}</h1>
-          <p>{siteConfig.tagline}</p>
-          <div className={styles.buttons}>
-            <Link to={useBaseUrl('docs/gettingStarted/intro')}>Go Read the Getting Started and Reference Docs</Link>
-          </div>
-        </header>
-        <main>
-          {features && features.length > 0 && (
-            <section className={styles.section}>
-              <div className={styles.features}>
-                {features.map((props, idx) => (
-                  <Feature key={idx} {...props} />
-                ))}
-              </div>
-            </section>
-          )}
-        </main>
-      </div>
+      <HomepageHeader />
+      <main>
+        <Description />
+        <HomepageFeatures />
+        <HomepageBatteriesIncludedSection />
+        <HomepageGettingThisSection />
+        <HomepageFAQ />
+      </main>
     </Layout>
   );
 }
-
-export default Home;

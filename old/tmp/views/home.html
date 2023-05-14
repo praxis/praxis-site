@@ -1,0 +1,379 @@
+<!--
+  There are a bunch of css changes in praxis we need to make.
+  For example, br and hr tags should really just be done w/ css on the hr (and p) tags.
+  We may want some styling for the code and ul/li tags.
+  @see /docs/styles.scss
+-->
+<h1>ProductPlan REST API v1</h1>
+<hr>
+<div id="overview">
+  <p>
+    The ProductPlan API provides you with a powerful tool to access and modify your ProductPlan roadmap data.
+    Its main purpose is to provide the ability to synchronize with other data sources,
+    either internal to your company or with other commercial products.
+    The API allows you to view, edit, and add to your ProductPlan data on your roadmap or Parking Lot.
+  </p>
+  <p>
+    The API provides the following capabilities:
+    <ul id="feature_list">
+      <li>List your roadmaps</li>
+      <li>Import one or more ideas to a Parking Lot</li>
+      <li>Synchronize percentage complete, title, description, and other fields</li>
+      <li>Create, update, or delete ideas in a Parking Lot</li>
+      <li>Update bars on a roadmap (except the dates)</li>
+    </ul>
+  </p>
+  <p>
+    The ProductPlan RESTful API may be used by any current ProductPlan user to access and modify specific application data.
+  </p>
+  <p>
+    This documentation references all Resource Endpoints (HTTP methods and URL paths)
+    and Schemas (available resource data structures) available in the API,
+    and how to issue those requests.
+  </p>
+  <p>
+    For additional assistance or support please contact us at
+    <a href="mailto:support@productplan.com?Subject=API%20Feedback">support@productplan.com</a>.
+    We appreciate any feedback or suggestions.
+  </p>
+</div>
+
+
+
+<div id="schemas" class="h2_section">
+  <br>
+  <h2>Schemas</h2>
+  <hr>
+  <p>
+    Schemas define the structure of the attributes for each of the exposed API resources.
+  </p>
+</div>
+
+
+
+<div id="resource_endpoints" class="h2_section">
+  <br>
+  <h2>Resource Endpoints</h2>
+  <hr>
+  <p>
+    To interact with a given resource endpoint one needs to send an HTTP request to the appropriate URI,
+    and always provide the desired API version and OAuth authentication headers.
+  </p>
+
+
+  <div id="uri" class="h3_section">
+    <br>
+    <h3>URI</h3>
+    <p>
+      All resource endpoints can be accessed using the same URI prefix of:
+      <pre>https://app.productplan.com/api</pre>
+    </p>
+  </div>
+
+
+  <div id="api_version" class="h3_section">
+    <br>
+    <h3>API Version</h3>
+    <p>
+      Every request requires the API version to be specified.
+      Requesting a specific API version is done by providing the <code>X-Api-Version</code> header
+      or by adding the <code>api_version</code> query string parameter.
+      Currently only version 1 is available.
+    </p>
+    <p>
+      For example, requesting version 1 through the headers will look like:
+      <pre>X-Api-Version: 1</pre>
+    </p>
+  </div>
+
+
+  <div id="authentication_authorization" class="h3_section">
+    <br>
+    <h3>Authentication &amp; Authorization</h3>
+    <p>
+      Every request requires a <strong>Personal Access Token</strong>, or <i>API Token</i>, to authenticate.
+    </p>
+    <p>
+      This token will map to one specific ProductPlan user.  If your account has multiple users, make sure to choose a
+      user who has the appropriate authorization you will need in order to perform the tasks you require of the API
+      (i.e. a user with edit access to the roadmap in question).
+    </p>
+    <p>
+      In the ProductPlan application, navigate to <strong>Your Settings</strong> (click on your email address in the upper-right),
+      and then <strong>API Token</strong> (<a href="/user_settings/personal_token" target="_blank">direct link</a>).
+      Follow the instructions for generating the key.  Once the 64 character unique hash key is created and displayed,
+      copy it somewhere safe and use it for authentication to the API.
+    </p>
+    <p>
+      For example, if your generated token is "0c8e87e3e4bb1c3f5c5acfbe7647e7651c31ac3114a67ee8512547e4fc416177",
+      you would use it to authenticate like this:
+
+      <pre>Authorization: Bearer 0c8e87e3e4bb1c3f5c5acfbe7647e7651c31ac3114a67ee8512547e4fc416177</pre>
+
+      Please note that the word "Bearer" must be included in the value and that
+      there is one (and only one!) space between "Bearer" and the token.
+    </p>
+  </div>
+
+
+  <div id="content_type" class="h3_section">
+    <br>
+    <h3>Content-Type</h3>
+    <p>
+      The ProductPlan API is JSON based. As such, any incoming request that transports a payload must appropriately
+      identify its encoding by setting the <code>Content-Type</code> header as <code>application/json</code>.
+      This is because some tools assume the lack of Content-Type definition as defaulting to url-form-encoding,
+      but this will not be accepted by the API.
+      <pre>Content-Type: application/json</pre>
+    </p>
+  </div>
+</div>
+
+
+
+<div id="examples" class="h2_section">
+  <br>
+  <h2>Examples</h2>
+  <hr>
+  <p>
+    Following are a few simple examples for the <a href="#/1/controller/V1-Endpoints-Ideas">Ideas</a>
+    Resource using <strong>cURL</strong>.
+  </p>
+  <p class="alert alert-info">
+    <strong>Hint: </strong>&nbsp;
+    An <a href="#/1/type/V1-MediaTypes-Idea">Idea</a> is contained in a
+    <a href="#/1/type/V1-MediaTypes-Roadmap">Roadmap's</a> <i>Parking Lot</i>.
+  </p>
+
+
+  <div id="example_idea_index" class="h3_section">
+    <br>
+    <h3>View all of your Ideas</h3>
+
+    <br>
+    <h5>Request:</h5>
+    <pre>curl --get -g \
+     --header "X-Api-Version: 1" \
+     --header "Authorization: Bearer ${API_TOKEN}" \
+     --data-urlencode "fields=href,id,name,fields,links{roadmap}" \
+     https://app.productplan.com/api/ideas</pre>
+
+    <br>
+    <h5>Response:</h5>
+    <p>
+      <code>Status: 200 OK</code>
+    </p>
+    <pre><code class="language-json">
+      [
+        {
+          "href": "/api/ideas/59",
+          "id": 59,
+          "name": "Design",
+          "fields": {
+            "pp_lanes": "This is a Lane",
+            "pp_legend": "This is a Label"
+          },
+          "links": {
+            "roadmap": {
+              "href": "/api/roadmaps/1"
+            }
+          }
+        },
+        {
+          "href": "/api/ideas/60",
+          "id": 60,
+          "name": "Implementation",
+          "fields": {
+            "pp_lanes": "Customize Your Roadmap",
+            "pp_legend": "Click the Legend or Label to edit"
+          },
+          "links": {
+            "roadmap": {
+              "href": "/api/roadmaps/1"
+            }
+          }
+        },
+        {
+          "href": "/api/ideas/61",
+          "id": 61,
+          "name": "Add OAuth2 Authentication",
+          "fields": {
+            "pp_lanes": "Security",
+            "pp_legend": "3rd-Party Integrations"
+          },
+          "links": {
+            "roadmap": {
+              "href": "/api/roadmaps/1"
+            }
+          }
+        }
+      ]
+    </code></pre>
+
+    <br>
+    <p class="alert alert-info">
+      <strong>Hint: </strong>&nbsp;
+      Use the <i>Request Parameters</i> in <a href="#/1/controller/V1-Endpoints-Ideas/index">Ideas#index</a>
+      to have more control over the data returned.
+    </p>
+  </div>
+
+
+  <div id="example_idea_create" class="h3_section">
+    <br>
+    <h3>Create a new Idea</h3>
+
+    <br>
+    <h5>Request:</h5>
+    <pre>curl --request POST \
+     --header  "X-Api-Version: 1" \
+     --header  "Authorization: Bearer ${API_TOKEN}" \
+     --header  "Content-Type: application/json" \
+     --data    '{"roadmap" : { "id" : 1 }, "name" : "My New Big Idea"}' \
+     https://app.productplan.com/api/ideas</pre>
+
+    <br>
+    <h5>Response:</h5>
+    <p>
+      <code>Status: 201 Created</code><br><code>Location: /api/ideas/63</code>
+    </p>
+
+    <br>
+    <p class="alert alert-info">
+      <strong>Hint: </strong>&nbsp;
+      See <a href="#/1/controller/V1-Endpoints-Ideas/create">Ideas#create</a> for required and optional payload attributes.
+    </p>
+  </div>
+
+
+  <div id="example_idea_update" class="h3_section">
+    <br>
+    <h3>Update an existing Idea</h3>
+
+    <br>
+    <h5>Request:</h5>
+    <pre>curl --request PATCH \
+     --header  "X-Api-Version: 1" \
+     --header  "Authorization: Bearer ${API_TOKEN}" \
+     --header  "Content-Type: application/json" \
+     --data    '{"name" : "My Updated Big Idea"}' \
+     https://app.productplan.com/api/ideas/63</pre>
+
+    <br>
+    <h5>Response:</h5>
+    <p>
+      <code>Status: 204 No Content</code>
+    </p>
+
+    <br>
+    <p class="alert alert-info">
+      <strong>Hint: </strong>&nbsp;
+      See <a href="#/1/controller/V1-Endpoints-Ideas/update">Ideas#update</a> for required and optional payload attributes.
+    </p>
+  </div>
+
+
+  <div id="example_idea_show" class="h3_section">
+    <br>
+    <h3>View a single Idea</h3>
+
+    <br>
+    <h5>Request:</h5>
+    <pre>curl --request GET \
+     --header  "X-Api-Version: 1" \
+     --header  "Authorization: Bearer ${API_TOKEN}" \
+     https://app.productplan.com/api/ideas/61</pre>
+
+    <br>
+    <h5>Response:</h5>
+    <p>
+      <code>Status: 200 OK</code>
+    </p>
+    <pre><code class="language-json">
+      {
+        "href": "/api/ideas/61",
+        "id": 61,
+        "name": "Add OAuth2 Authentication",
+        "description": "Allow users to register for and use OAuth2 tokens for API authentication.",
+        "strategic_value": "Helps support all businesses, especially enterprises.",
+        "notes": "Allow users to register their applications to allow integration with ProductPlan.",
+        "percent_done": 0,
+        "tags": [
+          "enterprise",
+          "security",
+          "integrations"
+        ],
+        "fields": {
+          "pp_lanes": "Security",
+          "pp_legend": "3rd-Party Integrations"
+        },
+        "timestamps": {
+          "created_at": "2017-03-11T11:05:20-08:00",
+          "updated_at": "2017-03-11T11:05:20-08:00"
+        },
+        "links": {
+          "roadmap": {
+            "href": "/api/roadmaps/1"
+          },
+          "external_links": {
+            "href": "/api/ideas/61/external_links"
+          }
+        }
+      }
+    </code></pre>
+
+    <br>
+    <p class="alert alert-info">
+      <strong>Hint: </strong>&nbsp;
+      Use the <i>Request Parameters</i> in <a href="#/1/controller/V1-Endpoints-Ideas/show">Ideas#show</a>
+      to have more control over the data returned.
+    </p>
+  </div>
+
+
+  <div id="example_idea_delete" class="h3_section">
+    <br>
+    <h3>Delete an existing Idea</h3>
+
+    <br>
+    <h5>Request:</h5>
+    <pre>curl --request DELETE \
+     --header  "X-Api-Version: 1" \
+     --header  "Authorization: Bearer ${API_TOKEN}" \
+     https://app.productplan.com/api/ideas/63</pre>
+
+    <br>
+    <h5>Response:</h5>
+    <p>
+      <code>Status: 204 No Content</code>
+    </p>
+
+    <br>
+    <p class="alert alert-info">
+      <strong>Hint: </strong>&nbsp;
+      See <a href="#/1/controller/V1-Endpoints-Ideas/destroy">Ideas#destroy</a>.
+    </p>
+  </div>
+</div>
+
+
+
+<div id="notes" style="display: none">
+  <br><br>
+  <hr>
+  <div>
+    <strong>TODO</strong>
+    <ul>
+      <li>Branding (styling, images, terms, colors, etc)</li>
+      <li>Open bug w/ praxis: see slack for last conversation</li>
+      <li>Open bug w/ praxis: see ExternalLink for example:
+        <ul>
+          <li>create/update payload example: doesn't adhere to attribut restriction of inlcude one of either A or B, but not both. (ExternalLink bar/idea)</li>
+          <li>show &amp; index examples: show two things that shouldn't be together: seemingly no way to override (ExternalLink links)</li>
+        </ul>
+      </li>
+      <li>Use Pundit for authorization</li>
+      <li>Refactoring</li>
+    </ul>
+  </div>
+</div>
