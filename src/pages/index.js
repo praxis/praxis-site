@@ -56,8 +56,8 @@ export default function Home() {
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
+      title={siteConfig.title}
+      description="Praxis is a light and extensible Ruby framework that allows you to design and create powerful, consistent and preformant REST APIs at unprecedented development speed">
       <HomepageHeader />
       <main>
         <Description />
