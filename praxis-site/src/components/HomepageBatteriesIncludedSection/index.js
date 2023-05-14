@@ -5,14 +5,13 @@ import styles from './styles.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import the FontAwesomeIcon component.
 
 const code = `\
-# Retrieve the list of users that:
+# For example, retrieve the list of users that:
 # - have their Date Of Birth(dob) later than Jan 1st, 2000
 # - paginated in groups of 50 by email order(from start)
 # - sort results by ascending email, then descending dob
 # - return only their id, email, dob and friend collection
-# - with each friend only returning their name and phone
-
-$ curl 'http://localhost:9292/api/users' - G \\
+# - with each friend only returning their name and phone 
+$ curl 'http://localhost:9292/api/users' -G \\
 --data - urlencode "filters=dob>2000-01-01" \\
 --data - urlencode "pagination=by=email,items=50" \\
 --data - urlencode "order=email,-dob" \\
@@ -43,14 +42,15 @@ export default function HomepageBatteriesIncludedSection() {
       <section className={styles.features} >
         <div className="row" style={{ width: '85%', alignItems: 'top' }}>
           <div className={clsx('col col--6')}>
+            <div style={{ fontSize: '1.1rem', fontFamily: "Ubuntu", marginBottom: '7px', textAlign: 'center' }}>Build APIs with clean and powerful querying capabilities</div>
             <CodeBlock language='ruby'>
               {code}
             </CodeBlock>
-            <div className="summary" style={{ fontStyle: 'italic', fontSize: '14px', marginTop: '15px', marginBottom: '0px' }}>
+            <div className="summary" style={{ fontStyle: 'italic', fontSize: '14px', marginTop: '15px', marginBottom: '0px', textAlign: 'center' }}>
               The implementation of the example above requires literally no controller code, or manual crafting of DB queries to be written, when several of the add-ons have been enabled.
             </div>
           </div>
-          <div className={clsx('col col--6')} style={{ paddingLeft: '40px', marginTop: '30px' }}>
+          <div className={clsx('col col--6')} style={{ paddingLeft: '40px', marginTop: '0px' }}>
             <h2 className={styles.title}>
               <FontAwesomeIcon icon="fa fa-battery-half" style={{ paddingRight: '10px' }} />
               With batteries included
