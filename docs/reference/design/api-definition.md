@@ -6,7 +6,7 @@ There are certain things in an API that are common across all or many endpoints 
 
 * API Information: Global, or versioned, metadata about the api (see [API Information](#global-information)).
 * Response Definitions: Reusable response templates (see [Response Definitions](response-definitions))
-* Traits: A convenient way to share common DSL elements across resource definitions and actions (see [traits](../traits/)).
+* Traits: A convenient way to share common DSL elements across resource definitions and actions (see [traits](../design/traits/)).
 
 Below is a basic ApiDefinition that defines a response template, general info, and a trait:
 

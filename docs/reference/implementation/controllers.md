@@ -207,4 +207,4 @@ The block receives the instance of your controller, which you can use to access
 all of the controller's properties, including the request, the response, any
 actions, etc.
 
-Any of these callbacks are able to interrupt (i.e., shortcut) the execution block of a request by returning an Response instance. For a complete discussion of what stages are available for use in your callbacks, as well as how to use them, please refer to the [Request LifeCycle](.request-life-cycle) documentation.
+Any of these callbacks are able to interrupt (i.e., shortcut) the execution block of a request by returning an Response instance. For a complete discussion of what stages are available for use in your callbacks, as well as how to use them, please refer to the [Request LifeCycle](request-life-cycle) documentation.

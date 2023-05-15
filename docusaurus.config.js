@@ -21,7 +21,7 @@ const config = {
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'praxis', // Usually your GitHub org/user name.
-  projectName: 'praxis.github.io', // 'praxis', // Usually your repo name.
+  projectName: 'praxis-site.github.io', // 'praxis', // Usually your repo name.
   trailingSlash: false,
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -94,7 +94,7 @@ const config = {
             items: [
               {
                 label: 'Tutorial',
-                to: '/docs/intro',
+                to: '/docs/gettingStarted/intro',
               },
             ],
           },

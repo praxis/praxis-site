@@ -42,7 +42,7 @@ action :index do
 end
 ```
 
-See [ActionDefinitions](../resource-definitions/) for more information about
+See [ActionDefinitions](../design/actions/) for more information about
 how to specify which responses an action can return.
 
 Having response templates that have all fields statically defined like our example above, make it more difficult to reuse accross actions. For example, you may want to use the `ok` definition above for an action that returns an a media-type other than `application/vnd.acme.user`.
@@ -301,4 +301,4 @@ function. Splitting into a different line to create a `proc` looks cleaner than
 adding the right parenthesis in one line.
 
 For more information on multipart responses, please see
-[Responses](../responses/).
+[Responses](../design/responses/).

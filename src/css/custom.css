@@ -37,7 +37,7 @@
 code {
   font-family: 'M PLUS 1 Code', sans-serif;
   font-size: 1rem;
-  vertical-align: top;
+  vertical-align: baseline;
   color: var(--ifm-color-primary-lightest);
 }
 
