@@ -93,8 +93,12 @@ const config = {
             title: 'Docs',
             items: [
               {
-                label: 'Tutorial',
+                label: 'Getting Started',
                 to: '/docs/gettingStarted/intro',
+              },
+              {
+                label: 'API Reference',
+                to: '/docs/Reference/intro',
               },
             ],
           },

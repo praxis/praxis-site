@@ -40,9 +40,9 @@ sed -i '' '/.*end/i \
 ' app/models/comment.rb
 ```
 
-If it's not entirely clear what that does, simply open up the model files under `app/models/` to see their definition.
+If it's not entirely clear what those magic sed commands do, simply open up the model files under `app/models/` to see their final definition.
 
-And the last thing we might want to do to setup the storage layer, is to fill in the DB with some interesting data that we can query through the API. We'll keep it very short, but at least we'll have a couple of posts, authored by a couple of users, with one comment for each one. Feel free to spice this up once you're starting to have fun! Copy this shell snippet to add this code into `db/seeds.rb` which is always run when we seed the DB.
+And the last thing we might want to do to finish the storage layer, is to fill in the DB with some interesting data that we can query through the API. We'll keep it very short, but at least we'll have a couple of posts, authored by a couple of users, with one comment for each one. Feel free to spice this up once you're starting to have fun! Copy this shell snippet to add this code into `db/seeds.rb` which is always run when we seed the DB.
 
 ```shell title="Create some useful data when seeding the DB"
 cat <<EOT >> db/seeds.rb

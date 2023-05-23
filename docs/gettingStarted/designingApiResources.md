@@ -21,7 +21,7 @@ attributes do
   attribute :id, Integer
   attribute :title, String
   attribute :content, String
-  attribute :author, MediaTypes::User
+  attribute :author, User
 end
 ```
 
@@ -31,8 +31,8 @@ Similarly, for the `Comment` MediaType, let's assume we want it to also have an 
 attributes do
   attribute :id, Integer
   attribute :content, String
-  attribute :post, MediaTypes::Post
-  attribute :user, MediaTypes::User
+  attribute :post, Post
+  attribute :user, User
 end
 ```
 
@@ -46,4 +46,4 @@ That should open your browser and show you something like:
 
 ![Docusaurus](/img/first-api-doc-browser.png)
 
-Nice, huh? Well, we might be feeling pretty good about our design, but we need to actually implement something before breaking out the champagne. Before we get into the implementation phase, we first need to make sure we have a properly built DB and have configured our models.
+Nice, huh? Fully documented, with examples and all. Well, we might be feeling pretty good about our design, but we need to actually implement something before breaking out the champagne. Before we jump into the implementation phase, however, we first need to make sure we have a properly built DB and have configured our models. Let's take a quick parenthesis to get all that setup.
