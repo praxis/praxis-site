@@ -3,7 +3,7 @@ title: Setting Up Our Database
 sidebar_label:  Setting Up Our Database
 ---
 
-So obviously, to have our API provide data, we need to have a DB with the proper posts and comments tables, and ideally populated with some interesting data. This part has nothing to do with Praxis, but it still needs to be done! Note that if you're building a Praxis API to serve already existing DB data, the only thing you need to do is to configure your models. Or even better, if you're building a Praxis API to serve already existing models within a Rails app, none of this needs to be done, as it's already in place. You can read more about how to build this within an existing Rails app in the documentation for the  `MiddlewareApp` module.
+Evidently, we want our API to provide some data. To achieve that we need to have a DB with the proper posts and comments tables, and ideally populated with some interesting bits. This part has nothing to do with Praxis, yet it still needs to be done! Note that if you're building a Praxis API to serve data from an already existing DB, the only thing you need to do is to configure your models to point to it. Or even better, if you're building a Praxis API to serve already existing models within a Rails app, none of this needs to be done, as it's already in place. You can read more about how to build this within an existing Rails app in the documentation for the  `MiddlewareApp` module.
 
 But we digress, let's first create the tables we want with a migration. Here's a quick and dirty thing you can copy paste to generate that. Note that we're simply adding a `title` and `content` field to the posts, as well as a "foreign key" to the users table for the `author` of the post. Remember that the initial example app we built upon already has a very basic users table. For the comments, we're only adding a `content` field, and a couple of keys to point back to the id of the associated `post`, and the `user` who made the comment. All very straightforward. Feel free to copy and paste the following snippet onto your shell:
 
@@ -40,7 +40,7 @@ sed -i '' '/.*end/i \
 ' app/models/comment.rb
 ```
 
-If it's not entirely clear what those magic sed commands do, simply open up the model files under `app/models/` to see their final definition.
+If it's not entirely clear what those magic `sed` commands do, simply open up the model files under `app/models/` to see their final definition.
 
 And the last thing we might want to do to finish the storage layer, is to fill in the DB with some interesting data that we can query through the API. We'll keep it very short, but at least we'll have a couple of posts, authored by a couple of users, with one comment for each one. Feel free to spice this up once you're starting to have fun! Copy this shell snippet to add this code into `db/seeds.rb` which is always run when we seed the DB.
 

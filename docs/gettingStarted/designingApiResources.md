@@ -3,7 +3,7 @@ title: Designing our API resources
 sidebar_label: Designing our API resources
 ---
 
-Ok, so our goal was to build an API that contains `Posts` and embedded `Comments`. So let's first scaffold the design for them. To do so, the easiest way is to use the Praxis scaffold generator, so let's do that:
+Our goal is to build an API that contains `Posts` and embedded `Comments`. So let's first scaffold the design part for them. To do so, the easiest way is to use the Praxis scaffold generator, so let's do that:
 
 ```shell
 bundle exec praxis g posts --model
@@ -12,7 +12,7 @@ bundle exec praxis g comments --model
 
 Each of these scaffold generation commands will create the design files (MediaType and Endpoint) that are necessary to define the API actions and resource shapes we want to expose. By default, the generator will create the standard set of CRUD actions for each endpoint: `create`, `index`, `show`, `update` and `delete`. This can be further customized by passing extra flags to the generators as well.
 
-Since we didn't specify the `--no-implementation` flag, the generator above has also created the corresponding implementation files (Controller and Resource) that go with the given design. We commonly would want to generate the implementation side of the API after we're happy with the design, but for the sake of this guide we'll just generate them all at once. Also, since we know we're using a DB, we also explicitly asked the generator to create the model file for us with `--model` (defaulting to an ActiveRecord model, but Sequel is also supported)
+Since we didn't specify the `--no-implementation` flag, the generator above has also created the corresponding implementation files (Controller and Resource) that go with the given design. We commonly would want to generate the implementation side of the API after we have iterated on, and we are happy with the design, but for the sake of this guide we'll just generate them all upfront. Also, since we know we're using a DB, we have also explicitly asked the generator to create the model file for us with `--model` (defaulting to an ActiveRecord model, but Sequel is also supported)
 
 So with all that scaffolding in place, it's time to put on our design hat. The first thing we need to do is to fill in the API attributes that we want `Posts` and `Comments` to have. For now, let's start simple and assume that a `Post` only has an `id` (`Integer`), a `title` (`String`), some `contents` (`String`) and an author (a `User`). Add these attributes into the `Post` MediaType in `design/v1/media_types/post.rb` so that its attributes block looks like:
 

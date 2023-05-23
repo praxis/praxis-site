@@ -7,7 +7,7 @@ So here we are. We have designed our new API endpoints by specifying which actio
 
 ## Implementing index and show actions
 
-The `index` and `show` actions (that search the collection and show a single element or multiple elements) are 100% implemented in the generated scaffolding code. Not only that, but they also support field selection (similarly to GraphQL), ordering, and pagination. Done and done. Don't quite believe it? Let's take our API for a spin shall we? Let's first start our app by:
+The `index` and `show` actions (that search the collection and show a single element or multiple elements) are 100% implemented in the generated scaffolding code. Done and done. Not only that, but they also support field selection (similarly to GraphQL), ordering, and pagination. Don't quite believe it? Let's take our API for a spin shall we? Let's first start our app by:
 
 ```shell
 bundle exec rackup
@@ -59,10 +59,7 @@ Luckily, since we've generated the endpoint using the Praxis generator, we alrea
 
 And now that the endpoint is ready to accept and validate that new `filters` parameter.
 
-In our case, we have designed the API attributes and relationships, with the same names we have designed our models (this happens often with initial designs). Because of that, we are all set to go. However, if we had API attributes that mapped to different columns or associations of our models, we would we simply need to inform the associated Resource object about how to map these API-level attribute names into ORM-level models and associations. If we had to do that, we woul need to fill it in the `filters_mapping` function in the `Post` resource (in `app/v1/resources/post.rb`) with the conversion.
-
-
- In our simple case, we've designed the DB fields to match those in the API, so we don't need to specify any extra mapping of fields to match our ORM layer, we are all ready to go with our filtering. However, other APIs may have to deal with already existing DBs and ORMs that might not perfectly match the API names you wish to expose. In these cases, you simply would need to provide the conversion at the resource level. For example, if our `title` API attribute of our `Post` mapped to a `titulo` column in our ORM, we would simply add that conversion in a `filters_mapping` function of the `Post` resource (`app/v1/resources/post.rb`). Here's an example of how that looks like:
+ In our simple case, we've designed the DB fields to match those in the API, so we don't need to specify any extra mapping of fields to match our ORM layer, we are all ready to go with our filtering. However, other APIs may have to deal with already existing DBs and ORMs that might not perfectly match the API names you wish to expose. In these cases, you simply would need to provide the conversion at the resource level. For example, if our `title` API attribute of our `Post` needed to be mapped to a column named `titulo` in our ORM, we would simply add that conversion in a `filters_mapping` function of the `Post` resource (`app/v1/resources/post.rb`). It's not our case, but here's an example of how that would look like:
  
 ```ruby
   filters_mapping(
@@ -70,11 +67,10 @@ In our case, we have designed the API attributes and relationships, with the sam
   )
 ```
 
-We can similarly add filtering for `Comments`. For example, we can allow filtering of comments by `post.id` and `user.id` so we can easily list comments for specific posts and/or made by certain users. Or, we can simply use the open form of filters (without a block) which would allow to filter by any existing attribute, using any of the available operators.
-Going the 'filter by anything' route for `Comments` simply involves adding the filters stanza (without a block) to the `Comments` endpoint (`design/v1/endpoints/comments.rb`):
+We can similarly add filtering for `Comments`. For example, filtering by `post.id` and `user.id` so we can easily list comments for specific posts and/or made by certain users. Or instead, for ilustration purposes, we can decide to allow filtering by any of its fields (and embedded fields). To do so, simply requires adding the same filters stanza (without a block) to the `Comments` endpoint (`design/v1/endpoints/comments.rb`):
 
 ```ruby
-    attribute :filters, Praxis::Types::FilteringParams.for(MediaTypes::Comment)
+  attribute :filters, Praxis::Types::FilteringParams.for(MediaTypes::Comment)
 ```
 
 So, that's essentially it. What!? There is still no need to build any controller or ORM queries? Nope, that's the power of following the best practices and adding the extensions. Let's give it a whirl!
