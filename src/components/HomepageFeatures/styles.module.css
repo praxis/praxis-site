@@ -22,7 +22,7 @@
 }
 
 .featureIcon {
-  color: var(--ifm-color-primary);
+  color: var(--ifm-color-primary-light);
   vertical-align: middle;
 }
 
@@ -36,7 +36,7 @@
 .features h3 {
   font-size: 1.2rem;
   /* color: #474a53; */
-  color: var(--ifm-color-primary);
+  color: var(--ifm-color-base);
   font-weight: 400;
   margin-bottom: 1rem;
   font-family: 'Ubuntu', sans-serif;
