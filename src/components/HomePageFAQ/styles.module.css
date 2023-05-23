@@ -19,7 +19,7 @@
   /* text-shadow: 0 2px 3px rgba(0, 0, 0, 0.3); */
   font-family: 'Ubuntu', sans-serif;
   text-align: center;
-  font-size: medium;
+  font-size: large;
   font-weight: 400;
 }
 
@@ -35,7 +35,10 @@
   flex-wrap: wrap;
   padding-left: 20px;
   padding-right: 20px;
-  font-size: small;
+}
+
+.how p {
+  font-size: 0.9rem;
 }
 
 [data-theme='dark'] {

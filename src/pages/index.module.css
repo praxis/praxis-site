@@ -32,8 +32,9 @@
   background-repeat: repeat;
   /* background-position: contain; */
   background-size: 100%;
-  font-size: large;
+  font-size: 1.2rem;
   font-weight: 500;
   /* background-color: #f4f7f810; */
   /* background-blend-mode: lighten; */
+  padding-bottom: 10px;
 }

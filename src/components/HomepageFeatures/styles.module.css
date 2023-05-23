@@ -12,7 +12,7 @@
 
 .featureIconBorder {
   border-radius: 50%;
-  border: 2px solid #606470;
+  border: 2px solid var(--ifm-color-primary-light);
   width: 80px;
   height: 80px;
   font-size: 40px;
@@ -22,7 +22,7 @@
 }
 
 .featureIcon {
-  color: #606470;
+  color: var(--ifm-color-primary);
   vertical-align: middle;
 }
 
@@ -35,7 +35,8 @@
 
 .features h3 {
   font-size: 1.2rem;
-  color: #606470;
+  /* color: #474a53; */
+  color: var(--ifm-color-primary);
   font-weight: 400;
   margin-bottom: 1rem;
   font-family: 'Ubuntu', sans-serif;
