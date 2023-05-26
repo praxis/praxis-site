@@ -6,7 +6,7 @@ Praxis processes each incoming request by funneling them through a pipeline of s
 
 Praxis allows applications to 'hook into' any of those existing stages through `before`, `after` and `around` callbacks and provides facilities to create or alter the pipeline. Any stage or its hooks are able to abort the pipeline processing early, and shortcut directly to sending a response to the client. A callback can indicate such shortcut by simply returning a `Praxis::Request` object. Note that when a callback does that, any other further callbacks are not going to be invoked.
 
-Note: while stages in the request lifecycle might behave similarly to bootstrap stages (as described [here](bootstrapping)), they perform a different role. Request life cycle stages define the processing path for every incoming request, while bootstrapping stages define the execution order when the application first boots.
+Note: while stages in the request lifecycle might behave similarly to bootstrap stages (as described [here](../internals/bootstrapping)), they perform a different role. Request life cycle stages define the processing path for every incoming request, while bootstrapping stages define the execution order when the application first boots.
 
 Praxis comes out of the box with the following pipeline of stages for any incoming request:
 
@@ -124,7 +124,7 @@ There is, however, an important difference beween an `after :action` callback, a
 There is currently no mechanism to order the callbacks for a given stage. They will be executed
 in the order that they were registered. Also, there is currently no way to install callbacks around the complete request lifecycle, for example, to install an `around` callback wrapping all of the 
 individual request stages. Both of these mechanisms can be added if the need arises.
-To achieve something similar to a request `around` filter, use the [builtin middleware registration](../application) that the Application provides
+To achieve something similar to a request `around` filter, use the [builtin middleware registration](../implementation/application) that the Application provides
 
 ### Shortcutting the request processing
 

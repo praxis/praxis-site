@@ -34,7 +34,7 @@ There is a specialized `MultipartOk` response class is used to easily return a `
 It just simply takes care of properly encoding the body as "multipart/form-data", with a proper "Content-Type"
 header specifying the boundary of each part. The response is registered as `:multipart_ok`.
 
-Upon rendering, this response class will also take care of properly dumping each parts according to its "Content-Type" header, using any applicable handlers registered with Praxis. See [`Handlers`](../???/) for more details on how to define and
+Upon rendering, this response class will also take care of properly dumping each parts according to its "Content-Type" header, using any applicable handlers registered with Praxis. See [`Handlers`](../internals/handlers/) for more details on how to define and
 register custom handlers.
 
 ## Parsing multipart object

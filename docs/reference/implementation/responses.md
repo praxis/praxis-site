@@ -18,7 +18,7 @@ These instances of response object expose several different way to configure and
 Many responses have a body: some useful content that is sent back to the user agent. You can easily set the body for a response by calling the `body=` writer of your instance. If your response has a body, then you should also set its `content_type=` so the user agent will know how to handle your data.
 
 If you provide a String when setting the body body, Praxis will respond verbatim with the body and content-type header you have provided. If you provide structured data -- a Hash or an Array -- Praxis will analyze your response's `content_type` and encode your data using a suitable handler (and default to JSON if no specific handler seems appropriate).
-See [Handlers](../handlers/) to learn how to customize encoding.
+See [Handlers](../internals/handlers/) to learn how to customize encoding.
 
 ```ruby
 response.content_type = 'application/vnd.acme.greeting'

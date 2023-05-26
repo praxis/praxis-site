@@ -301,4 +301,4 @@ function. Splitting into a different line to create a `proc` looks cleaner than
 adding the right parenthesis in one line.
 
 For more information on multipart responses, please see
-[Responses](../design/responses/).
+[Responses](../design/multipart/).
